@@ -10,7 +10,6 @@ import {
   RotateCcw,
   Download,
   Trash2,
-  Plus,
   Shield,
   CircleDot,
   MoveRight,
@@ -33,6 +32,10 @@ import {
   Hash,
   ImagePlus,
   UserPlus,
+  LogIn,
+  LogOut,
+  CalendarDays,
+  Grip,
 } from "lucide-react";
 
 const initialHome = [
@@ -79,6 +82,12 @@ const initialRoster = [
   { id: "r13", name: "Spielerin 13", number: "13", role: "BANK", color: "bg-white text-blue-700" },
   { id: "r14", name: "Spielerin 14", number: "14", role: "BANK", color: "bg-blue-700" },
   { id: "r15", name: "Spielerin 15", number: "15", role: "BANK", color: "bg-white text-blue-700" },
+];
+
+const initialTrainingBlocks = [
+  { id: "t1", title: "Aufwärmen", minutes: "15", focus: "Mobilisation + Passformen" },
+  { id: "t2", title: "Spielform", minutes: "20", focus: "Pressing auslösen" },
+  { id: "t3", title: "Abschlussspiel", minutes: "25", focus: "Umschalten nach Ballgewinn" },
 ];
 
 const initialBall = { id: "ball", x: 50, y: 50, label: "", color: "bg-white" };
@@ -158,7 +167,7 @@ function decodeBoardState(value) {
   }
 }
 
-function buildBoardPayload({ players, arrows, ball, formation, roster, boardTitle, matchInfo, clubLogo, notes }) {
+function buildBoardPayload({ players, arrows, ball, formation, roster, boardTitle, matchInfo, clubLogo, notes, trainingBlocks }) {
   return {
     players,
     arrows,
@@ -169,6 +178,7 @@ function buildBoardPayload({ players, arrows, ball, formation, roster, boardTitl
     matchInfo,
     clubLogo,
     notes,
+    trainingBlocks,
     savedAt: new Date().toISOString(),
   };
 }
@@ -177,10 +187,14 @@ export default function FussballTaktikboardApp() {
   const [currentView, setCurrentView] = useState("start");
   const [players, setPlayers] = useState([...initialHome, ...initialAway]);
   const [roster, setRoster] = useState(initialRoster);
+  const [trainingBlocks, setTrainingBlocks] = useState(initialTrainingBlocks);
   const [ball, setBall] = useState(initialBall);
   const [selectedId, setSelectedId] = useState(null);
   const [newPlayerName, setNewPlayerName] = useState("Neue Spielerin");
   const [newPlayerNumber, setNewPlayerNumber] = useState("16");
+  const [newTrainingTitle, setNewTrainingTitle] = useState("Neue Übung");
+  const [newTrainingMinutes, setNewTrainingMinutes] = useState("10");
+  const [newTrainingFocus, setNewTrainingFocus] = useState("Coachingpunkt");
   const [boardTitle, setBoardTitle] = useState("Taktikboard Fußball");
   const [matchInfo, setMatchInfo] = useState("Training / Spielbesprechung");
   const [clubLogo, setClubLogo] = useState("");
@@ -193,6 +207,10 @@ export default function FussballTaktikboardApp() {
   const [shareLink, setShareLink] = useState("");
   const [copied, setCopied] = useState(false);
   const [notes, setNotes] = useState("Schwerpunkte, Abläufe oder Coachingpunkte hier notieren...");
+  const [loginName, setLoginName] = useState("");
+  const [cloudEmail, setCloudEmail] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cloudBoards, setCloudBoards] = useState([]);
   const boardRef = useRef(null);
   const dragRef = useRef(null);
 
@@ -208,8 +226,17 @@ export default function FussballTaktikboardApp() {
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem("taktikboard_saved_setups_v3");
+      const raw = localStorage.getItem("taktikboard_saved_setups_v4");
       if (raw) setSavedSetups(JSON.parse(raw));
+      const cloudRaw = localStorage.getItem("taktikboard_cloud_boards_v1");
+      if (cloudRaw) setCloudBoards(JSON.parse(cloudRaw));
+      const userRaw = localStorage.getItem("taktikboard_login_v1");
+      if (userRaw) {
+        const user = JSON.parse(userRaw);
+        setLoginName(user.name || "");
+        setCloudEmail(user.email || "");
+        setIsLoggedIn(!!user.name);
+      }
     } catch {}
     const hash = window.location.hash.replace("#shared=", "");
     if (hash) {
@@ -223,13 +250,15 @@ export default function FussballTaktikboardApp() {
 
   useEffect(() => {
     try {
-      localStorage.setItem("taktikboard_saved_setups_v3", JSON.stringify(savedSetups));
+      localStorage.setItem("taktikboard_saved_setups_v4", JSON.stringify(savedSetups));
+      localStorage.setItem("taktikboard_cloud_boards_v1", JSON.stringify(cloudBoards));
     } catch {}
-  }, [savedSetups]);
+  }, [savedSetups, cloudBoards]);
 
   const applyExternalBoard = (data) => {
     setPlayers(data.players || [...initialHome, ...initialAway]);
     setRoster(data.roster || initialRoster);
+    setTrainingBlocks(data.trainingBlocks || initialTrainingBlocks);
     setArrows(data.arrows || []);
     setBall(data.ball || initialBall);
     setSelectedFormation(data.formation || "4-3-3");
@@ -280,6 +309,7 @@ export default function FussballTaktikboardApp() {
   const resetBoard = () => {
     setPlayers([...initialHome, ...initialAway]);
     setRoster(initialRoster);
+    setTrainingBlocks(initialTrainingBlocks);
     setBall(initialBall);
     setSelectedId(null);
     setArrows([]);
@@ -309,13 +339,7 @@ export default function FussballTaktikboardApp() {
     const id = `r${Date.now()}`;
     setRoster((prev) => [
       ...prev,
-      {
-        id,
-        name: newPlayerName || `Spielerin ${newPlayerNumber}`,
-        number: newPlayerNumber || "16",
-        role: "BANK",
-        color: "bg-blue-700",
-      },
+      { id, name: newPlayerName || `Spielerin ${newPlayerNumber}`, number: newPlayerNumber || "16", role: "BANK", color: "bg-blue-700" },
     ]);
     setNewPlayerName("Neue Spielerin");
     setNewPlayerNumber(String(Number(newPlayerNumber || 16) + 1));
@@ -327,21 +351,38 @@ export default function FussballTaktikboardApp() {
     const id = `c${Date.now()}${Math.floor(Math.random() * 1000)}`;
     setPlayers((prev) => [
       ...prev,
-      {
-        id,
-        x: 50,
-        y: 50,
-        label: rosterPlayer.number,
-        number: rosterPlayer.number,
-        role: rosterPlayer.role,
-        color: rosterPlayer.color,
-        locked: false,
-        team: "home",
-        rosterId: rosterPlayer.id,
-      },
+      { id, x: 50, y: 50, label: rosterPlayer.number, number: rosterPlayer.number, role: rosterPlayer.role, color: rosterPlayer.color, locked: false, team: "home", rosterId: rosterPlayer.id },
     ]);
     setSelectedId(id);
     setCurrentView("board");
+  };
+
+  const handleRosterDragStart = (rosterPlayer) => (e) => {
+    e.dataTransfer.setData("application/json", JSON.stringify(rosterPlayer));
+    e.dataTransfer.effectAllowed = "copy";
+  };
+
+  const handleBoardDrop = (e) => {
+    e.preventDefault();
+    const raw = e.dataTransfer.getData("application/json");
+    if (!raw) return;
+    try {
+      const rosterPlayer = JSON.parse(raw);
+      const alreadyOnBoard = players.some((p) => p.rosterId === rosterPlayer.id && p.team === "home");
+      if (alreadyOnBoard) return;
+      const board = boardRef.current;
+      if (!board) return;
+      const rect = board.getBoundingClientRect();
+      const x = clamp(((e.clientX - rect.left) / rect.width) * 100, 3, 97);
+      const y = clamp(((e.clientY - rect.top) / rect.height) * 100, 3, 97);
+      const id = `c${Date.now()}${Math.floor(Math.random() * 1000)}`;
+      setPlayers((prev) => [
+        ...prev,
+        { id, x, y, label: rosterPlayer.number, number: rosterPlayer.number, role: rosterPlayer.role, color: rosterPlayer.color, locked: false, team: "home", rosterId: rosterPlayer.id },
+      ]);
+      setSelectedId(id);
+      setCurrentView("board");
+    } catch {}
   };
 
   const removeSelected = () => {
@@ -413,8 +454,22 @@ export default function FussballTaktikboardApp() {
     setSelectedArrowId(null);
   };
 
+  const addTrainingBlock = () => {
+    setTrainingBlocks((prev) => [
+      ...prev,
+      { id: `t${Date.now()}`, title: newTrainingTitle, minutes: newTrainingMinutes, focus: newTrainingFocus },
+    ]);
+    setNewTrainingTitle("Neue Übung");
+    setNewTrainingMinutes("10");
+    setNewTrainingFocus("Coachingpunkt");
+  };
+
+  const removeTrainingBlock = (id) => {
+    setTrainingBlocks((prev) => prev.filter((block) => block.id !== id));
+  };
+
   const exportBoardFile = () => {
-    const data = buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes });
+    const data = buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes, trainingBlocks });
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
@@ -435,19 +490,43 @@ export default function FussballTaktikboardApp() {
 
   const saveSetup = () => {
     const name = `Aufstellung ${savedSetups.length + 1}`;
-    const setup = { id: Date.now().toString(), name, ...buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes }) };
+    const setup = { id: Date.now().toString(), name, ...buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes, trainingBlocks }) };
     setSavedSetups((prev) => [setup, ...prev]);
   };
 
+  const saveCloudBoard = () => {
+    if (!isLoggedIn) return;
+    const cloudBoard = {
+      id: Date.now().toString(),
+      owner: loginName,
+      email: cloudEmail,
+      ...buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes, trainingBlocks }),
+    };
+    setCloudBoards((prev) => [cloudBoard, ...prev]);
+  };
+
   const loadSetup = (id) => {
-    const setup = savedSetups.find((item) => item.id === id);
+    const setup = savedSetups.find((item) => item.id === id) || cloudBoards.find((item) => item.id === id);
     if (!setup) return;
     applyExternalBoard(setup);
     setCurrentView("board");
   };
 
+  const handleLogin = () => {
+    if (!loginName.trim()) return;
+    const email = cloudEmail || `${loginName.toLowerCase().replace(/\s+/g, ".")}@team.local`;
+    setCloudEmail(email);
+    setIsLoggedIn(true);
+    localStorage.setItem("taktikboard_login_v1", JSON.stringify({ name: loginName, email }));
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem("taktikboard_login_v1");
+  };
+
   const generateShareLink = async () => {
-    const payload = buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes });
+    const payload = buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes, trainingBlocks });
     const encoded = encodeBoardState(payload);
     const url = `${window.location.origin}${window.location.pathname}#shared=${encoded}`;
     setShareLink(url);
@@ -501,6 +580,8 @@ export default function FussballTaktikboardApp() {
     if (type === "training") {
       setBoardTitle("Trainingseinheit");
       setMatchInfo("Trainingsplanung");
+      setCurrentView("training");
+      return;
     }
     if (type === "match") {
       setBoardTitle("Spielanalyse / Gegnerbesprechung");
@@ -524,20 +605,36 @@ export default function FussballTaktikboardApp() {
   return (
     <div className="min-h-screen p-6 print:bg-white print:p-2 bg-[linear-gradient(135deg,#dbeafe_0%,#ffffff_45%,#bfdbfe_100%)]">
       {currentView === "start" ? (
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto space-y-6">
           <div className="rounded-[32px] bg-white/85 shadow-xl border border-blue-100 p-8 md:p-10 backdrop-blur">
             <div className="flex items-start justify-between gap-6 flex-wrap">
               <div>
                 <div className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">Web-App für den PC</div>
                 <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2">Taktikboard Pro Blau/Weiß</h1>
-                <p className="text-slate-600 mt-3 max-w-2xl">Mit eigenem Kaderbereich, damit du Spielerinnen per Drag & Drop oder Klick in die Aufstellung bringen kannst.</p>
+                <p className="text-slate-600 mt-3 max-w-2xl">Mit Drag & Drop vom Kader aufs Spielfeld, Login-Bereich für Cloud-Speicherung und Trainingsplanung mit Übungen.</p>
+              </div>
+              <div className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-slate-600 min-w-[280px]">
+                <div className="font-semibold text-slate-900 mb-2">Login & Cloud</div>
+                {!isLoggedIn ? (
+                  <div className="space-y-2">
+                    <Input value={loginName} onChange={(e) => setLoginName(e.target.value)} placeholder="Trainername" />
+                    <Input value={cloudEmail} onChange={(e) => setCloudEmail(e.target.value)} placeholder="E-Mail" />
+                    <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={handleLogin}><LogIn className="w-4 h-4 mr-2" /> Login aktivieren</Button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div>Angemeldet als <strong>{loginName}</strong></div>
+                    <div className="text-xs text-slate-500">{cloudEmail}</div>
+                    <Button variant="outline" className="w-full rounded-xl border-blue-200" onClick={handleLogout}><LogOut className="w-4 h-4 mr-2" /> Abmelden</Button>
+                  </div>
+                )}
               </div>
             </div>
             <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5 mt-10">
               <StartCard icon={<Monitor className="w-8 h-8" />} title="Neues Taktikboard" text="Direkt mit Formation, Spielerinnen und Pfeilen starten." onClick={() => openPresetView("board")} />
-              <StartCard icon={<Users className="w-8 h-8" />} title="Spielerinnen-Kader" text="Kader verwalten und Spielerinnen in die Aufstellung ziehen." onClick={() => setCurrentView("roster")} />
-              <StartCard icon={<FolderOpen className="w-8 h-8" />} title="Gespeicherte Taktiken" text="Gespeicherte Aufstellungen öffnen und weiter bearbeiten." onClick={() => setCurrentView("library")} />
-              <StartCard icon={<ClipboardList className="w-8 h-8" />} title="Matchbesprechung" text="Gegnerbild und Spielplan für dein Team und den Co-Trainer." onClick={() => openPresetView("match")} />
+              <StartCard icon={<Users className="w-8 h-8" />} title="Spielerinnen-Kader" text="Kader verwalten und per Drag & Drop in die Aufstellung ziehen." onClick={() => setCurrentView("roster")} />
+              <StartCard icon={<CalendarDays className="w-8 h-8" />} title="Trainingsplanung" text="Übungen, Minuten und Schwerpunkte für Einheiten planen." onClick={() => setCurrentView("training")} />
+              <StartCard icon={<FolderOpen className="w-8 h-8" />} title="Gespeicherte Taktiken" text="Lokale und Cloud-Boards öffnen und weiter bearbeiten." onClick={() => setCurrentView("library")} />
             </div>
           </div>
         </div>
@@ -546,7 +643,7 @@ export default function FussballTaktikboardApp() {
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
               <div className="text-3xl font-bold text-slate-900">Gespeicherte Taktiken</div>
-              <div className="text-slate-600 mt-1">Öffne gespeicherte Boards oder starte ein neues.</div>
+              <div className="text-slate-600 mt-1">Öffne lokale oder Cloud-Boards.</div>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><ArrowLeft className="w-4 h-4 mr-2" /> Menü</Button>
@@ -554,19 +651,19 @@ export default function FussballTaktikboardApp() {
             </div>
           </div>
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {savedSetups.length === 0 ? (
+            {[...savedSetups, ...cloudBoards].length === 0 ? (
               <Card className="rounded-3xl shadow-sm border-dashed col-span-full border-blue-200"><CardContent className="p-8 text-center text-slate-500">Noch keine Taktik gespeichert.</CardContent></Card>
             ) : (
-              savedSetups.map((setup) => (
+              [...savedSetups, ...cloudBoards].map((setup) => (
                 <Card key={setup.id} className="rounded-3xl shadow-sm border-blue-100">
                   <CardContent className="p-6 space-y-4">
                     <div>
-                      <div className="text-xl font-bold text-slate-900">{setup.name}</div>
-                      <div className="text-sm text-slate-600">{setup.boardTitle || "Taktikboard Fußball"}</div>
+                      <div className="text-xl font-bold text-slate-900">{setup.boardTitle || "Taktikboard Fußball"}</div>
+                      <div className="text-sm text-slate-600">{setup.matchInfo || "Besprechung"}</div>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       <Badge variant="secondary">{setup.formation}</Badge>
-                      <Badge variant="outline">{setup.matchInfo || "Besprechung"}</Badge>
+                      {setup.owner && <Badge variant="outline">Cloud: {setup.owner}</Badge>}
                     </div>
                     <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => loadSetup(setup.id)}>Öffnen</Button>
                   </CardContent>
@@ -575,12 +672,50 @@ export default function FussballTaktikboardApp() {
             )}
           </div>
         </div>
+      ) : currentView === "training" ? (
+        <div className="max-w-6xl mx-auto space-y-6">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <div className="text-3xl font-bold text-slate-900">Trainingsplanung</div>
+              <div className="text-slate-600 mt-1">Einheiten, Dauer und Coachingpunkte verwalten.</div>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><ArrowLeft className="w-4 h-4 mr-2" /> Menü</Button>
+              <Button className="rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => setCurrentView("board")}>Zum Board</Button>
+            </div>
+          </div>
+          <Card className="rounded-3xl border-blue-100">
+            <CardContent className="p-6 grid lg:grid-cols-[320px_1fr] gap-6">
+              <div className="space-y-3">
+                <div className="text-lg font-bold text-slate-900">Neue Einheit / Übung</div>
+                <Input value={newTrainingTitle} onChange={(e) => setNewTrainingTitle(e.target.value)} placeholder="Titel" />
+                <Input value={newTrainingMinutes} onChange={(e) => setNewTrainingMinutes(e.target.value.replace(/[^0-9]/g, "").slice(0, 3))} placeholder="Minuten" />
+                <Textarea value={newTrainingFocus} onChange={(e) => setNewTrainingFocus(e.target.value)} className="min-h-[100px]" placeholder="Schwerpunkt" />
+                <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={addTrainingBlock}><Plus className="w-4 h-4 mr-2" /> Trainingsblock hinzufügen</Button>
+              </div>
+              <div className="space-y-4">
+                {trainingBlocks.map((block) => (
+                  <Card key={block.id} className="rounded-2xl border-blue-100 shadow-sm">
+                    <CardContent className="p-4 flex items-start justify-between gap-4">
+                      <div>
+                        <div className="font-bold text-slate-900">{block.title}</div>
+                        <div className="text-sm text-slate-500">{block.minutes} Minuten</div>
+                        <div className="text-sm text-slate-600 mt-2">{block.focus}</div>
+                      </div>
+                      <Button variant="destructive" className="rounded-xl" onClick={() => removeTrainingBlock(block.id)}><Trash2 className="w-4 h-4" /></Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       ) : currentView === "roster" ? (
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
               <div className="text-3xl font-bold text-slate-900">Spielerinnen-Kader</div>
-              <div className="text-slate-600 mt-1">Per Klick eine Spielerin ins Board übernehmen. Danach auf dem Spielfeld frei platzieren.</div>
+              <div className="text-slate-600 mt-1">Spielerinnen per Klick oder direkt per Drag & Drop aufs Spielfeld setzen.</div>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><ArrowLeft className="w-4 h-4 mr-2" /> Menü</Button>
@@ -595,7 +730,7 @@ export default function FussballTaktikboardApp() {
                 <Input value={newPlayerName} onChange={(e) => setNewPlayerName(e.target.value)} placeholder="Name" />
                 <Input value={newPlayerNumber} onChange={(e) => setNewPlayerNumber(e.target.value.replace(/[^0-9]/g, "").slice(0, 2))} placeholder="Nummer" />
                 <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={addRosterPlayer}><UserPlus className="w-4 h-4 mr-2" /> Zum Kader hinzufügen</Button>
-                <p className="text-sm text-slate-500">Tipp: Im nächsten Schritt kannst du jede Spielerin mit einem Klick in die Aufstellung übernehmen.</p>
+                <p className="text-sm text-slate-500">Tipp: Ziehe eine Spielerin direkt aufs Spielfeld oder klicke auf „In Aufstellung übernehmen“.</p>
               </div>
 
               <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -614,9 +749,14 @@ export default function FussballTaktikboardApp() {
                           <div className="font-bold text-slate-900">{player.name}</div>
                           <div className="text-sm text-slate-500">Position: {player.role}</div>
                         </div>
-                        <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => addRosterPlayerToBoard(player)} disabled={onBoard}>
-                          {onBoard ? "Schon im Board" : "In Aufstellung übernehmen"}
-                        </Button>
+                        <div className="flex gap-2">
+                          <div draggable={!onBoard} onDragStart={handleRosterDragStart(player)} className={`flex-1 rounded-xl border px-3 py-2 text-sm flex items-center justify-center gap-2 ${onBoard ? "opacity-50 cursor-not-allowed" : "cursor-grab border-blue-200 bg-blue-50"}`}>
+                            <Grip className="w-4 h-4" /> Ziehen
+                          </div>
+                          <Button className="flex-1 rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => addRosterPlayerToBoard(player)} disabled={onBoard}>
+                            {onBoard ? "Schon im Board" : "Einfügen"}
+                          </Button>
+                        </div>
                       </CardContent>
                     </Card>
                   );
@@ -632,11 +772,12 @@ export default function FussballTaktikboardApp() {
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <CardTitle className="text-2xl text-blue-800">Taktikboard Fußball</CardTitle>
-                  <p className="text-sm text-slate-600">Mit extra Spielerinnen-Seite für die Aufstellung.</p>
+                  <p className="text-sm text-slate-600">Mit Drag & Drop, Login/Cloud und Trainingsplanung.</p>
                 </div>
                 <div className="flex gap-2">
                   <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><Home className="w-4 h-4" /></Button>
                   <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("roster")}><Users className="w-4 h-4" /></Button>
+                  <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("training")}><CalendarDays className="w-4 h-4" /></Button>
                   <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("library")}><FolderOpen className="w-4 h-4" /></Button>
                 </div>
               </div>
@@ -649,10 +790,11 @@ export default function FussballTaktikboardApp() {
                   <Button variant={mode === "draw" ? "default" : "outline"} className={`rounded-xl ${mode === "draw" ? "bg-blue-700 hover:bg-blue-800" : "border-blue-200"}`} onClick={() => { setMode("draw"); setArrowStart(null); }}><MoveRight className="w-4 h-4 mr-2" /> Pfeile</Button>
                   <Button className="rounded-xl bg-blue-700 hover:bg-blue-800" onClick={resetBoard}><RotateCcw className="w-4 h-4 mr-2" /> Reset</Button>
                   <Button variant="secondary" className="rounded-xl" onClick={exportImage}><Download className="w-4 h-4 mr-2" /> Bild</Button>
-                  <Button variant="outline" className="rounded-xl border-blue-200" onClick={saveSetup}><Save className="w-4 h-4 mr-2" /> Speichern</Button>
+                  <Button variant="outline" className="rounded-xl border-blue-200" onClick={saveSetup}><Save className="w-4 h-4 mr-2" /> Lokal speichern</Button>
+                  <Button variant="outline" className="rounded-xl border-blue-200" onClick={saveCloudBoard} disabled={!isLoggedIn}><LogIn className="w-4 h-4 mr-2" /> Cloud speichern</Button>
                   <Button variant="outline" className="rounded-xl border-blue-200" onClick={exportBoardFile}><Upload className="w-4 h-4 mr-2 rotate-180" /> Datei</Button>
                   <Button variant="outline" className="rounded-xl border-blue-200" onClick={printBoard}><Printer className="w-4 h-4 mr-2" /> Drucken</Button>
-                  <Button variant="outline" className="rounded-xl border-blue-200" onClick={exportPDF}><FileText className="w-4 h-4 mr-2" /> PDF</Button>
+                  <Button variant="outline" className="rounded-xl border-blue-200 col-span-2" onClick={exportPDF}><FileText className="w-4 h-4 mr-2" /> PDF</Button>
                 </div>
               </div>
 
@@ -662,7 +804,7 @@ export default function FussballTaktikboardApp() {
                   <Users className="w-4 h-4 text-blue-700" />
                 </div>
                 <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => setCurrentView("roster")}>Zur Spielerinnen-Seite</Button>
-                <p className="text-xs text-slate-500">Dort kannst du den Kader verwalten und Spielerinnen in die Aufstellung übernehmen.</p>
+                <p className="text-xs text-slate-500">Dort kannst du Spielerinnen per Drag & Drop aufs Spielfeld bringen.</p>
               </div>
 
               <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
@@ -750,9 +892,12 @@ export default function FussballTaktikboardApp() {
                 onPointerMove={mode === "move" ? onPointerMove : undefined}
                 onPointerUp={stopDrag}
                 onPointerLeave={stopDrag}
+                onDrop={handleBoardDrop}
+                onDragOver={(e) => e.preventDefault()}
                 className="relative w-full aspect-[7/10] rounded-[28px] overflow-hidden select-none touch-none shadow-inner"
                 style={{ background: "linear-gradient(180deg, #1d4ed8 0%, #2563eb 12%, #1f9d55 12%, #178347 100%)" }}
               >
+                <div className="absolute right-4 top-4 z-10 rounded-xl bg-white/90 px-3 py-2 text-xs text-slate-600 shadow">Drag & Drop vom Kader hierher</div>
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "linear-gradient(45deg, rgba(255,255,255,0.55) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.55) 75%, transparent 75%, transparent)", backgroundSize: "40px 40px" }} />
                 <div className="absolute inset-0 opacity-20">
                   {Array.from({ length: 12 }).map((_, i) => (
@@ -796,6 +941,19 @@ export default function FussballTaktikboardApp() {
                 })}
 
                 <button onPointerDown={startDrag("ball", "ball")} onClick={() => setSelectedId("ball")} className={`absolute -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white border-2 ${selectedId === "ball" ? "border-yellow-300 scale-110" : "border-slate-900/20"} shadow-lg`} style={{ left: `${ball.x}%`, top: `${ball.y}%` }} title="Ball" />
+              </div>
+
+              <div className="grid lg:grid-cols-[1fr_320px] gap-4 mt-4">
+                <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600 print:hidden">
+                  <Badge className="rounded-full bg-blue-700"><Shield className="w-3 h-3 mr-1" /> Heim</Badge>
+                  <Badge variant="outline" className="rounded-full"><Hash className="w-3 h-3 mr-1" /> Nummern sichtbar</Badge>
+                  <Badge variant="outline" className="rounded-full"><Lock className="w-3 h-3 mr-1" /> Positionen fixierbar</Badge>
+                  <Badge variant="outline" className="rounded-full"><Grip className="w-3 h-3 mr-1" /> Kader per Drag & Drop</Badge>
+                </div>
+                <div className="border border-blue-100 rounded-2xl p-4 bg-blue-50 text-sm text-slate-700">
+                  <div className="font-semibold mb-2">Kurznotizen</div>
+                  <div className="whitespace-pre-wrap text-slate-600">{notes}</div>
+                </div>
               </div>
             </CardContent>
           </Card>
