@@ -10,7 +10,6 @@ import {
   RotateCcw,
   Download,
   Trash2,
-  Plus,
   Shield,
   CircleDot,
   MoveRight,
@@ -37,21 +36,10 @@ import {
   LogOut,
   CalendarDays,
   Grip,
+  Plus,
 } from "lucide-react";
 
 const initialHome = [];
-  { id: "h1", x: 50, y: 90, label: "1", number: "1", role: "TW", color: "bg-blue-700", locked: false, team: "home", rosterId: "r1" },
-  { id: "h2", x: 18, y: 72, label: "2", number: "2", role: "LV", color: "bg-blue-700", locked: false, team: "home", rosterId: "r2" },
-  { id: "h3", x: 38, y: 74, label: "3", number: "3", role: "IV", color: "bg-blue-700", locked: false, team: "home", rosterId: "r3" },
-  { id: "h4", x: 62, y: 74, label: "4", number: "4", role: "IV", color: "bg-blue-700", locked: false, team: "home", rosterId: "r4" },
-  { id: "h5", x: 82, y: 72, label: "5", number: "5", role: "RV", color: "bg-blue-700", locked: false, team: "home", rosterId: "r5" },
-  { id: "h6", x: 28, y: 52, label: "6", number: "6", role: "ZM", color: "bg-blue-700", locked: false, team: "home", rosterId: "r6" },
-  { id: "h7", x: 50, y: 56, label: "7", number: "7", role: "6", color: "bg-blue-700", locked: false, team: "home", rosterId: "r7" },
-  { id: "h8", x: 72, y: 52, label: "8", number: "8", role: "ZM", color: "bg-blue-700", locked: false, team: "home", rosterId: "r8" },
-  { id: "h9", x: 24, y: 28, label: "9", number: "9", role: "LA", color: "bg-blue-700", locked: false, team: "home", rosterId: "r9" },
-  { id: "h10", x: 50, y: 22, label: "10", number: "10", role: "ST", color: "bg-blue-700", locked: false, team: "home", rosterId: "r10" },
-  { id: "h11", x: 76, y: 28, label: "11", number: "11", role: "RA", color: "bg-blue-700", locked: false, team: "home", rosterId: "r11" },
-];
 
 const initialAway = [
   { id: "a1", x: 50, y: 10, label: "1", number: "1", role: "TW", color: "bg-white text-red-700", locked: false, team: "away" },
@@ -95,43 +83,43 @@ const initialBall = { id: "ball", x: 50, y: 50, label: "", color: "bg-white" };
 
 const formations = {
   "4-3-3": [
-    { id: "h1", x: 50, y: 90, role: "TW" },
-    { id: "h2", x: 18, y: 72, role: "LV" },
-    { id: "h3", x: 38, y: 74, role: "IV" },
-    { id: "h4", x: 62, y: 74, role: "IV" },
-    { id: "h5", x: 82, y: 72, role: "RV" },
-    { id: "h6", x: 28, y: 52, role: "ZM" },
-    { id: "h7", x: 50, y: 56, role: "6" },
-    { id: "h8", x: 72, y: 52, role: "ZM" },
-    { id: "h9", x: 24, y: 28, role: "LA" },
-    { id: "h10", x: 50, y: 22, role: "ST" },
-    { id: "h11", x: 76, y: 28, role: "RA" },
+    { x: 50, y: 90, role: "TW" },
+    { x: 18, y: 72, role: "LV" },
+    { x: 38, y: 74, role: "IV" },
+    { x: 62, y: 74, role: "IV" },
+    { x: 82, y: 72, role: "RV" },
+    { x: 28, y: 52, role: "ZM" },
+    { x: 50, y: 56, role: "6" },
+    { x: 72, y: 52, role: "ZM" },
+    { x: 24, y: 28, role: "LA" },
+    { x: 50, y: 22, role: "ST" },
+    { x: 76, y: 28, role: "RA" },
   ],
   "4-4-2": [
-    { id: "h1", x: 50, y: 90, role: "TW" },
-    { id: "h2", x: 18, y: 72, role: "LV" },
-    { id: "h3", x: 38, y: 74, role: "IV" },
-    { id: "h4", x: 62, y: 74, role: "IV" },
-    { id: "h5", x: 82, y: 72, role: "RV" },
-    { id: "h6", x: 16, y: 48, role: "LM" },
-    { id: "h7", x: 38, y: 52, role: "ZM" },
-    { id: "h8", x: 62, y: 52, role: "ZM" },
-    { id: "h9", x: 84, y: 48, role: "RM" },
-    { id: "h10", x: 40, y: 24, role: "ST" },
-    { id: "h11", x: 60, y: 24, role: "ST" },
+    { x: 50, y: 90, role: "TW" },
+    { x: 18, y: 72, role: "LV" },
+    { x: 38, y: 74, role: "IV" },
+    { x: 62, y: 74, role: "IV" },
+    { x: 82, y: 72, role: "RV" },
+    { x: 16, y: 48, role: "LM" },
+    { x: 38, y: 52, role: "ZM" },
+    { x: 62, y: 52, role: "ZM" },
+    { x: 84, y: 48, role: "RM" },
+    { x: 40, y: 24, role: "ST" },
+    { x: 60, y: 24, role: "ST" },
   ],
   "3-5-2": [
-    { id: "h1", x: 50, y: 90, role: "TW" },
-    { id: "h2", x: 28, y: 74, role: "IV" },
-    { id: "h3", x: 50, y: 76, role: "IV" },
-    { id: "h4", x: 72, y: 74, role: "IV" },
-    { id: "h5", x: 12, y: 48, role: "LAV" },
-    { id: "h6", x: 32, y: 52, role: "ZM" },
-    { id: "h7", x: 50, y: 56, role: "6" },
-    { id: "h8", x: 68, y: 52, role: "ZM" },
-    { id: "h9", x: 88, y: 48, role: "RAV" },
-    { id: "h10", x: 40, y: 24, role: "ST" },
-    { id: "h11", x: 60, y: 24, role: "ST" },
+    { x: 50, y: 90, role: "TW" },
+    { x: 28, y: 74, role: "IV" },
+    { x: 50, y: 76, role: "IV" },
+    { x: 72, y: 74, role: "IV" },
+    { x: 12, y: 48, role: "LAV" },
+    { x: 32, y: 52, role: "ZM" },
+    { x: 50, y: 56, role: "6" },
+    { x: 68, y: 52, role: "ZM" },
+    { x: 88, y: 48, role: "RAV" },
+    { x: 40, y: 24, role: "ST" },
+    { x: 60, y: 24, role: "ST" },
   ],
   "3-6-1": [
     { x: 50, y: 90, role: "TW" },
@@ -209,7 +197,7 @@ export default function FussballTaktikboardApp() {
   const [newTrainingTitle, setNewTrainingTitle] = useState("Neue Übung");
   const [newTrainingMinutes, setNewTrainingMinutes] = useState("10");
   const [newTrainingFocus, setNewTrainingFocus] = useState("Coachingpunkt");
-  const [boardTitle, setBoardTitle] = useState("Taktikboard Fußball");
+  const [boardTitle, setBoardTitle] = useState("Taktikboard Lady Hawks");
   const [matchInfo, setMatchInfo] = useState("Training / Spielbesprechung");
   const [clubLogo, setClubLogo] = useState("/ladyhawks-logo.png");
   const [selectedFormation, setSelectedFormation] = useState("4-3-3");
@@ -252,6 +240,7 @@ export default function FussballTaktikboardApp() {
         setIsLoggedIn(!!user.name);
       }
     } catch {}
+
     const hash = window.location.hash.replace("#shared=", "");
     if (hash) {
       const shared = decodeBoardState(hash);
@@ -276,9 +265,9 @@ export default function FussballTaktikboardApp() {
     setArrows(data.arrows || []);
     setBall(data.ball || initialBall);
     setSelectedFormation(data.formation || "4-3-3");
-    setBoardTitle(data.boardTitle || "Taktikboard Fußball");
+    setBoardTitle(data.boardTitle || "Taktikboard Lady Hawks");
     setMatchInfo(data.matchInfo || "Training / Spielbesprechung");
-    setClubLogo(data.clubLogo || "");
+    setClubLogo(data.clubLogo || "/ladyhawks-logo.png");
     setNotes(data.notes || "");
     setSelectedArrowId(null);
     setArrowStart(null);
@@ -330,62 +319,68 @@ export default function FussballTaktikboardApp() {
     setArrowStart(null);
     setSelectedArrowId(null);
     setSelectedFormation("4-3-3");
-    setBoardTitle("Taktikboard Fußball");
+    setBoardTitle("Taktikboard Lady Hawks");
     setMatchInfo("Training / Spielbesprechung");
     setNotes("Schwerpunkte, Abläufe oder Coachingpunkte hier notieren...");
   };
 
- const applyFormation = (formationKey) => {
-  const formation = formations[formationKey] || formations["4-3-3"];
-  setPlayers((prev) => {
-    const homePlayers = prev.filter((p) => p.team === "home");
-    const awayPlayers = prev.filter((p) => p.team !== "home");
-    const updatedHome = homePlayers.map((p, index) => {
-      const slot = formation[index];
-      return slot ? { ...p, x: slot.x, y: slot.y, role: slot.role } : p;
+  const applyFormation = (formationKey) => {
+    const formation = formations[formationKey] || formations["4-3-3"];
+    setPlayers((prev) => {
+      const homePlayers = prev.filter((p) => p.team === "home");
+      const awayPlayers = prev.filter((p) => p.team !== "home");
+      const updatedHome = homePlayers.map((p, index) => {
+        const slot = formation[index];
+        return slot ? { ...p, x: slot.x, y: slot.y, role: slot.role } : p;
+      });
+      return [...updatedHome, ...awayPlayers];
     });
-    return [...updatedHome, ...awayPlayers];
-  });
-  setSelectedFormation(formationKey);
-};
+    setSelectedFormation(formationKey);
+  };
 
   const addRosterPlayer = () => {
     const id = `r${Date.now()}`;
     setRoster((prev) => [
       ...prev,
-      { id, name: newPlayerName || `Spielerin ${newPlayerNumber}`, number: newPlayerNumber || "16", role: "BANK", color: "bg-blue-700" },
+      {
+        id,
+        name: newPlayerName || `Spielerin ${newPlayerNumber}`,
+        number: newPlayerNumber || "16",
+        role: "BANK",
+        color: "bg-blue-700",
+      },
     ]);
     setNewPlayerName("Neue Spielerin");
     setNewPlayerNumber(String(Number(newPlayerNumber || 16) + 1));
   };
 
   const addRosterPlayerToBoard = (rosterPlayer) => {
-  const alreadyOnBoard = players.some((p) => p.rosterId === rosterPlayer.id && p.team === "home");
-  if (alreadyOnBoard) return;
+    const alreadyOnBoard = players.some((p) => p.rosterId === rosterPlayer.id && p.team === "home");
+    if (alreadyOnBoard) return;
 
-  const formation = formations[selectedFormation] || formations["4-3-3"];
-  const homeCount = players.filter((p) => p.team === "home").length;
-  const slot = formation[homeCount] || { x: 50, y: 50, role: rosterPlayer.role };
+    const formation = formations[selectedFormation] || formations["4-3-3"];
+    const homeCount = players.filter((p) => p.team === "home").length;
+    const slot = formation[homeCount] || { x: 50, y: 50, role: rosterPlayer.role };
+    const id = `c${Date.now()}${Math.floor(Math.random() * 1000)}`;
 
-  const id = `c${Date.now()}${Math.floor(Math.random() * 1000)}`;
-  setPlayers((prev) => [
-    ...prev,
-    {
-      id,
-      x: slot.x,
-      y: slot.y,
-      label: rosterPlayer.number,
-      number: rosterPlayer.number,
-      role: slot.role || rosterPlayer.role,
-      color: rosterPlayer.color,
-      locked: false,
-      team: "home",
-      rosterId: rosterPlayer.id,
-    },
-  ]);
-  setSelectedId(id);
-  setCurrentView("board");
-};
+    setPlayers((prev) => [
+      ...prev,
+      {
+        id,
+        x: slot.x,
+        y: slot.y,
+        label: rosterPlayer.number,
+        number: rosterPlayer.number,
+        role: slot.role || rosterPlayer.role,
+        color: rosterPlayer.color,
+        locked: false,
+        team: "home",
+        rosterId: rosterPlayer.id,
+      },
+    ]);
+    setSelectedId(id);
+    setCurrentView("board");
+  };
 
   const handleRosterDragStart = (rosterPlayer) => (e) => {
     e.dataTransfer.setData("application/json", JSON.stringify(rosterPlayer));
@@ -396,19 +391,33 @@ export default function FussballTaktikboardApp() {
     e.preventDefault();
     const raw = e.dataTransfer.getData("application/json");
     if (!raw) return;
+
     try {
       const rosterPlayer = JSON.parse(raw);
       const alreadyOnBoard = players.some((p) => p.rosterId === rosterPlayer.id && p.team === "home");
       if (alreadyOnBoard) return;
+
       const board = boardRef.current;
       if (!board) return;
       const rect = board.getBoundingClientRect();
       const x = clamp(((e.clientX - rect.left) / rect.width) * 100, 3, 97);
       const y = clamp(((e.clientY - rect.top) / rect.height) * 100, 3, 97);
       const id = `c${Date.now()}${Math.floor(Math.random() * 1000)}`;
+
       setPlayers((prev) => [
         ...prev,
-        { id, x, y, label: rosterPlayer.number, number: rosterPlayer.number, role: rosterPlayer.role, color: rosterPlayer.color, locked: false, team: "home", rosterId: rosterPlayer.id },
+        {
+          id,
+          x,
+          y,
+          label: rosterPlayer.number,
+          number: rosterPlayer.number,
+          role: rosterPlayer.role,
+          color: rosterPlayer.color,
+          locked: false,
+          team: "home",
+          rosterId: rosterPlayer.id,
+        },
       ]);
       setSelectedId(id);
       setCurrentView("board");
@@ -487,7 +496,12 @@ export default function FussballTaktikboardApp() {
   const addTrainingBlock = () => {
     setTrainingBlocks((prev) => [
       ...prev,
-      { id: `t${Date.now()}`, title: newTrainingTitle, minutes: newTrainingMinutes, focus: newTrainingFocus },
+      {
+        id: `t${Date.now()}`,
+        title: newTrainingTitle,
+        minutes: newTrainingMinutes,
+        focus: newTrainingFocus,
+      },
     ]);
     setNewTrainingTitle("Neue Übung");
     setNewTrainingMinutes("10");
@@ -520,7 +534,11 @@ export default function FussballTaktikboardApp() {
 
   const saveSetup = () => {
     const name = `Aufstellung ${savedSetups.length + 1}`;
-    const setup = { id: Date.now().toString(), name, ...buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes, trainingBlocks }) };
+    const setup = {
+      id: Date.now().toString(),
+      name,
+      ...buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes, trainingBlocks }),
+    };
     setSavedSetups((prev) => [setup, ...prev]);
   };
 
@@ -647,12 +665,10 @@ export default function FussballTaktikboardApp() {
                   <img src={clubLogo} alt="Lady Hawks Logo" className="h-24 w-24 object-contain rounded-2xl border border-blue-100 bg-white p-2 shadow-sm" />
                 ) : null}
                 <div>
-              <div>
-                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">Web-App für den PC</div>
-                <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2">Taktikboard Lady Hawks</h1>
-                <p className="text-slate-600 mt-3 max-w-2xl">Mit Drag & Drop vom Kader aufs Spielfeld, Teamlogo auf der Startseite und Trainingsplanung mit Übungen.</p>
-              </div>
-              </div>
+                  <div className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">Web-App für den PC</div>
+                  <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2">Taktikboard Lady Hawks</h1>
+                  <p className="text-slate-600 mt-3 max-w-2xl">Mit Drag & Drop vom Kader aufs Spielfeld, Teamlogo auf der Startseite und Trainingsplanung mit Übungen.</p>
+                </div>
               </div>
               <div className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-slate-600 min-w-[280px]">
                 <div className="font-semibold text-slate-900 mb-2">Login & Cloud</div>
@@ -671,6 +687,7 @@ export default function FussballTaktikboardApp() {
                 )}
               </div>
             </div>
+
             <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5 mt-10">
               <StartCard icon={<Monitor className="w-8 h-8" />} title="Neues Taktikboard" text="Direkt mit Formation, Spielerinnen und Pfeilen starten." onClick={() => openPresetView("board")} />
               <StartCard icon={<Users className="w-8 h-8" />} title="Spielerinnen-Kader" text="Kader verwalten und per Drag & Drop in die Aufstellung ziehen." onClick={() => setCurrentView("roster")} />
@@ -691,6 +708,7 @@ export default function FussballTaktikboardApp() {
               <Button className="rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => openPresetView("board")}>Neues Board</Button>
             </div>
           </div>
+
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
             {[...savedSetups, ...cloudBoards].length === 0 ? (
               <Card className="rounded-3xl shadow-sm border-dashed col-span-full border-blue-200"><CardContent className="p-8 text-center text-slate-500">Noch keine Taktik gespeichert.</CardContent></Card>
@@ -699,7 +717,7 @@ export default function FussballTaktikboardApp() {
                 <Card key={setup.id} className="rounded-3xl shadow-sm border-blue-100">
                   <CardContent className="p-6 space-y-4">
                     <div>
-                      <div className="text-xl font-bold text-slate-900">{setup.boardTitle || "Taktikboard Fußball"}</div>
+                      <div className="text-xl font-bold text-slate-900">{setup.boardTitle || "Taktikboard Lady Hawks"}</div>
                       <div className="text-sm text-slate-600">{setup.matchInfo || "Besprechung"}</div>
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -725,6 +743,7 @@ export default function FussballTaktikboardApp() {
               <Button className="rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => setCurrentView("board")}>Zum Board</Button>
             </div>
           </div>
+
           <Card className="rounded-3xl border-blue-100">
             <CardContent className="p-6 grid lg:grid-cols-[320px_1fr] gap-6">
               <div className="space-y-3">
@@ -756,7 +775,7 @@ export default function FussballTaktikboardApp() {
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
               <div className="text-3xl font-bold text-slate-900">Spielerinnen-Kader</div>
-              <div className="text-slate-600 mt-1">Spielerinnen per Klick oder direkt per Drag & Drop aufs Spielfeld setzen.</div>
+              <div className="text-slate-600 mt-1">Spielerinnen-Namen und Nummern im Kader ändern und danach per Klick oder Drag & Drop aufs Spielfeld setzen.</div>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><ArrowLeft className="w-4 h-4 mr-2" /> Menü</Button>
@@ -771,7 +790,7 @@ export default function FussballTaktikboardApp() {
                 <Input value={newPlayerName} onChange={(e) => setNewPlayerName(e.target.value)} placeholder="Name" />
                 <Input value={newPlayerNumber} onChange={(e) => setNewPlayerNumber(e.target.value.replace(/[^0-9]/g, "").slice(0, 2))} placeholder="Nummer" />
                 <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={addRosterPlayer}><UserPlus className="w-4 h-4 mr-2" /> Zum Kader hinzufügen</Button>
-                <p className="text-sm text-slate-500">Tipp: Ziehe eine Spielerin direkt aufs Spielfeld oder klicke auf „In Aufstellung übernehmen“.</p>
+                <p className="text-sm text-slate-500">Tipp: Ziehe eine Spielerin direkt aufs Spielfeld oder klicke auf „Einfügen“.</p>
               </div>
 
               <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -786,44 +805,19 @@ export default function FussballTaktikboardApp() {
                           </div>
                           {onBoard ? <Badge variant="secondary">Im Board</Badge> : <Badge variant="outline">Kader</Badge>}
                         </div>
-                        <div>
-                          <div className="space-y-2">
-  <Input
-    value={player.name}
-    onChange={(e) =>
-      setRoster((prev) =>
-        prev.map((r) => (r.id === player.id ? { ...r, name: e.target.value } : r))
-      )
-    }
-    placeholder="Name"
-  />
-  <Input
-    value={player.number}
-    onChange={(e) => {
-      const cleaned = e.target.value.replace(/[^0-9]/g, "").slice(0, 2);
-      setRoster((prev) =>
-        prev.map((r) => (r.id === player.id ? { ...r, number: cleaned } : r))
-      );
-      setPlayers((prev) =>
-        prev.map((p) => (p.rosterId === player.id ? { ...p, number: cleaned, label: cleaned } : p))
-      );
-    }}
-    placeholder="Nummer"
-  />
-  <Input
-    value={player.role}
-    onChange={(e) => {
-      const role = e.target.value.slice(0, 5).toUpperCase();
-      setRoster((prev) =>
-        prev.map((r) => (r.id === player.id ? { ...r, role } : r))
-      );
-      setPlayers((prev) =>
-        prev.map((p) => (p.rosterId === player.id ? { ...p, role } : p))
-      );
-    }}
-    placeholder="Position"
-  />
-</div>
+                        <div className="space-y-2">
+                          <Input value={player.name} onChange={(e) => setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, name: e.target.value } : r)))} placeholder="Name" />
+                          <Input value={player.number} onChange={(e) => {
+                            const cleaned = e.target.value.replace(/[^0-9]/g, "").slice(0, 2);
+                            setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, number: cleaned } : r)));
+                            setPlayers((prev) => prev.map((p) => (p.rosterId === player.id ? { ...p, number: cleaned, label: cleaned } : p)));
+                          }} placeholder="Nummer" />
+                          <Input value={player.role} onChange={(e) => {
+                            const role = e.target.value.slice(0, 5).toUpperCase();
+                            setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, role } : r)));
+                            setPlayers((prev) => prev.map((p) => (p.rosterId === player.id ? { ...p, role } : p)));
+                          }} placeholder="Position" />
+                        </div>
                         <div className="flex gap-2">
                           <div draggable={!onBoard} onDragStart={handleRosterDragStart(player)} className={`flex-1 rounded-xl border px-3 py-2 text-sm flex items-center justify-center gap-2 ${onBoard ? "opacity-50 cursor-not-allowed" : "cursor-grab border-blue-200 bg-blue-50"}`}>
                             <Grip className="w-4 h-4" /> Ziehen
