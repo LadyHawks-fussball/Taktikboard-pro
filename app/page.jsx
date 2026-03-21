@@ -39,38 +39,24 @@ import {
   Plus,
 } from "lucide-react";
 
-const initialHome = [];
-
-const initialAway = [
-  { id: "a1", x: 50, y: 10, label: "1", number: "1", role: "TW", color: "bg-white text-red-700", locked: false, team: "away" },
-  { id: "a2", x: 18, y: 28, label: "2", number: "2", role: "LV", color: "bg-white text-red-700", locked: false, team: "away" },
-  { id: "a3", x: 38, y: 26, label: "3", number: "3", role: "IV", color: "bg-white text-red-700", locked: false, team: "away" },
-  { id: "a4", x: 62, y: 26, label: "4", number: "4", role: "IV", color: "bg-white text-red-700", locked: false, team: "away" },
-  { id: "a5", x: 82, y: 28, label: "5", number: "5", role: "RV", color: "bg-white text-red-700", locked: false, team: "away" },
-  { id: "a6", x: 28, y: 48, label: "6", number: "6", role: "ZM", color: "bg-white text-red-700", locked: false, team: "away" },
-  { id: "a7", x: 50, y: 44, label: "7", number: "7", role: "6", color: "bg-white text-red-700", locked: false, team: "away" },
-  { id: "a8", x: 72, y: 48, label: "8", number: "8", role: "ZM", color: "bg-white text-red-700", locked: false, team: "away" },
-  { id: "a9", x: 24, y: 72, label: "9", number: "9", role: "LA", color: "bg-white text-red-700", locked: false, team: "away" },
-  { id: "a10", x: 50, y: 78, label: "10", number: "10", role: "ST", color: "bg-white text-red-700", locked: false, team: "away" },
-  { id: "a11", x: 76, y: 72, label: "11", number: "11", role: "RA", color: "bg-white text-red-700", locked: false, team: "away" },
-];
+const initialAway = [];
 
 const initialRoster = [
-  { id: "r1", name: "Spielerin 1", number: "1", role: "TW", color: "bg-blue-700" },
-  { id: "r2", name: "Spielerin 2", number: "2", role: "LV", color: "bg-blue-700" },
-  { id: "r3", name: "Spielerin 3", number: "3", role: "IV", color: "bg-blue-700" },
-  { id: "r4", name: "Spielerin 4", number: "4", role: "IV", color: "bg-blue-700" },
-  { id: "r5", name: "Spielerin 5", number: "5", role: "RV", color: "bg-blue-700" },
-  { id: "r6", name: "Spielerin 6", number: "6", role: "ZM", color: "bg-blue-700" },
-  { id: "r7", name: "Spielerin 7", number: "7", role: "6", color: "bg-blue-700" },
-  { id: "r8", name: "Spielerin 8", number: "8", role: "ZM", color: "bg-blue-700" },
-  { id: "r9", name: "Spielerin 9", number: "9", role: "LA", color: "bg-blue-700" },
-  { id: "r10", name: "Spielerin 10", number: "10", role: "ST", color: "bg-blue-700" },
-  { id: "r11", name: "Spielerin 11", number: "11", role: "RA", color: "bg-blue-700" },
-  { id: "r12", name: "Spielerin 12", number: "12", role: "BANK", color: "bg-blue-700" },
-  { id: "r13", name: "Spielerin 13", number: "13", role: "BANK", color: "bg-white text-blue-700" },
-  { id: "r14", name: "Spielerin 14", number: "14", role: "BANK", color: "bg-blue-700" },
-  { id: "r15", name: "Spielerin 15", number: "15", role: "BANK", color: "bg-white text-blue-700" },
+  { id: "r1", name: "Spielerin 1", number: "1", role: "TW", color: "bg-blue-700", customRoleLabel: "TW" },
+  { id: "r2", name: "Spielerin 2", number: "2", role: "LV", color: "bg-blue-700", customRoleLabel: "LV" },
+  { id: "r3", name: "Spielerin 3", number: "3", role: "IV", color: "bg-blue-700", customRoleLabel: "IV" },
+  { id: "r4", name: "Spielerin 4", number: "4", role: "IV", color: "bg-blue-700", customRoleLabel: "IV" },
+  { id: "r5", name: "Spielerin 5", number: "5", role: "RV", color: "bg-blue-700", customRoleLabel: "RV" },
+  { id: "r6", name: "Spielerin 6", number: "6", role: "ZM", color: "bg-blue-700", customRoleLabel: "ZM" },
+  { id: "r7", name: "Spielerin 7", number: "7", role: "6", color: "bg-blue-700", customRoleLabel: "6" },
+  { id: "r8", name: "Spielerin 8", number: "8", role: "ZM", color: "bg-blue-700", customRoleLabel: "ZM" },
+  { id: "r9", name: "Spielerin 9", number: "9", role: "LA", color: "bg-blue-700", customRoleLabel: "LA" },
+  { id: "r10", name: "Spielerin 10", number: "10", role: "ST", color: "bg-blue-700", customRoleLabel: "ST" },
+  { id: "r11", name: "Spielerin 11", number: "11", role: "RA", color: "bg-blue-700", customRoleLabel: "RA" },
+  { id: "r12", name: "Spielerin 12", number: "12", role: "BANK", color: "bg-blue-700", customRoleLabel: "BANK" },
+  { id: "r13", name: "Spielerin 13", number: "13", role: "BANK", color: "bg-white text-blue-700", customRoleLabel: "BANK" },
+  { id: "r14", name: "Spielerin 14", number: "14", role: "BANK", color: "bg-blue-700", customRoleLabel: "BANK" },
+  { id: "r15", name: "Spielerin 15", number: "15", role: "BANK", color: "bg-white text-blue-700", customRoleLabel: "BANK" },
 ];
 
 const initialTrainingBlocks = [
@@ -187,7 +173,7 @@ function buildBoardPayload({ players, arrows, ball, formation, roster, boardTitl
 
 export default function FussballTaktikboardApp() {
   const [currentView, setCurrentView] = useState("start");
-  const [players, setPlayers] = useState([...initialAway]);
+  const [players, setPlayers] = useState([]);
   const [roster, setRoster] = useState(initialRoster);
   const [trainingBlocks, setTrainingBlocks] = useState(initialTrainingBlocks);
   const [ball, setBall] = useState(initialBall);
@@ -226,9 +212,12 @@ export default function FussballTaktikboardApp() {
     return roster.find((r) => r.id === selected.rosterId) || null;
   }, [selected, roster]);
 
+  const startingPlayers = useMemo(() => players.filter((p) => p.team === "home"), [players]);
+  const benchPlayers = useMemo(() => roster.filter((r) => !players.some((p) => p.rosterId === r.id && p.team === "home")), [roster, players]);
+
   useEffect(() => {
     try {
-      const raw = localStorage.getItem("taktikboard_saved_setups_v4");
+      const raw = localStorage.getItem("taktikboard_saved_setups_v5");
       if (raw) setSavedSetups(JSON.parse(raw));
       const cloudRaw = localStorage.getItem("taktikboard_cloud_boards_v1");
       if (cloudRaw) setCloudBoards(JSON.parse(cloudRaw));
@@ -253,13 +242,13 @@ export default function FussballTaktikboardApp() {
 
   useEffect(() => {
     try {
-      localStorage.setItem("taktikboard_saved_setups_v4", JSON.stringify(savedSetups));
+      localStorage.setItem("taktikboard_saved_setups_v5", JSON.stringify(savedSetups));
       localStorage.setItem("taktikboard_cloud_boards_v1", JSON.stringify(cloudBoards));
     } catch {}
   }, [savedSetups, cloudBoards]);
 
   const applyExternalBoard = (data) => {
-    setPlayers(data.players || [...initialAway]);
+    setPlayers(data.players || []);
     setRoster(data.roster || initialRoster);
     setTrainingBlocks(data.trainingBlocks || initialTrainingBlocks);
     setArrows(data.arrows || []);
@@ -310,8 +299,7 @@ export default function FussballTaktikboardApp() {
   };
 
   const resetBoard = () => {
-    setPlayers([...initialAway]);
-    setRoster(initialRoster);
+    setPlayers([]);
     setTrainingBlocks(initialTrainingBlocks);
     setBall(initialBall);
     setSelectedId(null);
@@ -328,12 +316,11 @@ export default function FussballTaktikboardApp() {
     const formation = formations[formationKey] || formations["4-3-3"];
     setPlayers((prev) => {
       const homePlayers = prev.filter((p) => p.team === "home");
-      const awayPlayers = prev.filter((p) => p.team !== "home");
       const updatedHome = homePlayers.map((p, index) => {
         const slot = formation[index];
         return slot ? { ...p, x: slot.x, y: slot.y, role: slot.role } : p;
       });
-      return [...updatedHome, ...awayPlayers];
+      return [...updatedHome];
     });
     setSelectedFormation(formationKey);
   };
@@ -348,6 +335,7 @@ export default function FussballTaktikboardApp() {
         number: newPlayerNumber || "16",
         role: "BANK",
         color: "bg-blue-700",
+        customRoleLabel: "BANK",
       },
     ]);
     setNewPlayerName("Neue Spielerin");
@@ -379,7 +367,6 @@ export default function FussballTaktikboardApp() {
       },
     ]);
     setSelectedId(id);
-    setCurrentView("board");
   };
 
   const handleRosterDragStart = (rosterPlayer) => (e) => {
@@ -420,7 +407,6 @@ export default function FussballTaktikboardApp() {
         },
       ]);
       setSelectedId(id);
-      setCurrentView("board");
     } catch {}
   };
 
@@ -452,6 +438,12 @@ export default function FussballTaktikboardApp() {
     const role = value.slice(0, 5).toUpperCase();
     setRoster((prev) => prev.map((r) => (r.id === selected.rosterId ? { ...r, role } : r)));
     setPlayers((prev) => prev.map((p) => (p.rosterId === selected.rosterId ? { ...p, role } : p)));
+  };
+
+  const updateSelectedRoleLabel = (value) => {
+    if (!selected?.rosterId) return;
+    const label = value.slice(0, 12);
+    setRoster((prev) => prev.map((r) => (r.id === selected.rosterId ? { ...r, customRoleLabel: label } : r)));
   };
 
   const toggleSelectedLock = () => {
@@ -631,12 +623,6 @@ export default function FussballTaktikboardApp() {
       setCurrentView("training");
       return;
     }
-    if (type === "match") {
-      setBoardTitle("Taktikboard Lady Hawks");
-      setMatchInfo("Matchbesprechung");
-      setCurrentView("board");
-      return;
-    }
     if (type === "board") {
       setBoardTitle("Taktikboard Lady Hawks");
       setMatchInfo("Training / Spielbesprechung");
@@ -667,7 +653,7 @@ export default function FussballTaktikboardApp() {
                 <div>
                   <div className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">Web-App für den PC</div>
                   <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2">Taktikboard Lady Hawks</h1>
-                  <p className="text-slate-600 mt-3 max-w-2xl">Mit Drag & Drop vom Kader aufs Spielfeld, Teamlogo auf der Startseite und Trainingsplanung mit Übungen.</p>
+                  <p className="text-slate-600 mt-3 max-w-2xl">Mit rechter Spielerinnen-Liste, extra Bank, freiem Positionsnamen und Trainingsplanung mit Übungen.</p>
                 </div>
               </div>
               <div className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-slate-600 min-w-[280px]">
@@ -708,7 +694,6 @@ export default function FussballTaktikboardApp() {
               <Button className="rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => openPresetView("board")}>Neues Board</Button>
             </div>
           </div>
-
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
             {[...savedSetups, ...cloudBoards].length === 0 ? (
               <Card className="rounded-3xl shadow-sm border-dashed col-span-full border-blue-200"><CardContent className="p-8 text-center text-slate-500">Noch keine Taktik gespeichert.</CardContent></Card>
@@ -775,7 +760,7 @@ export default function FussballTaktikboardApp() {
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
               <div className="text-3xl font-bold text-slate-900">Spielerinnen-Kader</div>
-              <div className="text-slate-600 mt-1">Spielerinnen-Namen und Nummern im Kader ändern und danach per Klick oder Drag & Drop aufs Spielfeld setzen.</div>
+              <div className="text-slate-600 mt-1">Spielerinnen im Kader bearbeiten und später aufs Spielfeld ziehen.</div>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><ArrowLeft className="w-4 h-4 mr-2" /> Menü</Button>
@@ -790,58 +775,39 @@ export default function FussballTaktikboardApp() {
                 <Input value={newPlayerName} onChange={(e) => setNewPlayerName(e.target.value)} placeholder="Name" />
                 <Input value={newPlayerNumber} onChange={(e) => setNewPlayerNumber(e.target.value.replace(/[^0-9]/g, "").slice(0, 2))} placeholder="Nummer" />
                 <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={addRosterPlayer}><UserPlus className="w-4 h-4 mr-2" /> Zum Kader hinzufügen</Button>
-                <p className="text-sm text-slate-500">Tipp: Ziehe eine Spielerin direkt aufs Spielfeld oder klicke auf „Einfügen“.</p>
               </div>
-
               <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {roster.map((player) => {
-                  const onBoard = players.some((p) => p.rosterId === player.id && p.team === "home");
-                  return (
-                    <Card key={player.id} className="rounded-2xl border-blue-100 shadow-sm">
-                      <CardContent className="p-4 space-y-3">
-                        <div className="flex items-center justify-between">
-                          <div className={`w-10 h-10 rounded-full ${player.color} border-2 border-white shadow flex items-center justify-center text-sm font-bold`}>
-                            {player.number}
-                          </div>
-                          {onBoard ? <Badge variant="secondary">Im Board</Badge> : <Badge variant="outline">Kader</Badge>}
+                {roster.map((player) => (
+                  <Card key={player.id} className="rounded-2xl border-blue-100 shadow-sm">
+                    <CardContent className="p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className={`w-10 h-10 rounded-full ${player.color} border-2 border-white shadow flex items-center justify-center text-sm font-bold`}>
+                          {player.number}
                         </div>
-                        <div className="space-y-2">
-                          <Input value={player.name} onChange={(e) => setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, name: e.target.value } : r)))} placeholder="Name" />
-                          <Input value={player.number} onChange={(e) => {
-                            const cleaned = e.target.value.replace(/[^0-9]/g, "").slice(0, 2);
-                            setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, number: cleaned } : r)));
-                            setPlayers((prev) => prev.map((p) => (p.rosterId === player.id ? { ...p, number: cleaned, label: cleaned } : p)));
-                          }} placeholder="Nummer" />
-                          <Input value={player.role} onChange={(e) => {
-                            const role = e.target.value.slice(0, 5).toUpperCase();
-                            setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, role } : r)));
-                            setPlayers((prev) => prev.map((p) => (p.rosterId === player.id ? { ...p, role } : p)));
-                          }} placeholder="Position" />
-                        </div>
-                        <div className="flex gap-2">
-                          <div draggable={!onBoard} onDragStart={handleRosterDragStart(player)} className={`flex-1 rounded-xl border px-3 py-2 text-sm flex items-center justify-center gap-2 ${onBoard ? "opacity-50 cursor-not-allowed" : "cursor-grab border-blue-200 bg-blue-50"}`}>
-                            <Grip className="w-4 h-4" /> Ziehen
-                          </div>
-                          <Button className="flex-1 rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => addRosterPlayerToBoard(player)} disabled={onBoard}>
-                            {onBoard ? "Schon im Board" : "Einfügen"}
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
+                        <Badge variant={players.some((p) => p.rosterId === player.id) ? "secondary" : "outline"}>{players.some((p) => p.rosterId === player.id) ? "Im Board" : "Kader"}</Badge>
+                      </div>
+                      <Input value={player.name} onChange={(e) => setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, name: e.target.value } : r)))} placeholder="Name" />
+                      <Input value={player.number} onChange={(e) => {
+                        const cleaned = e.target.value.replace(/[^0-9]/g, "").slice(0, 2);
+                        setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, number: cleaned } : r)));
+                        setPlayers((prev) => prev.map((p) => (p.rosterId === player.id ? { ...p, number: cleaned, label: cleaned } : p)));
+                      }} placeholder="Nummer" />
+                      <Input value={player.customRoleLabel || player.role} onChange={(e) => setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, customRoleLabel: e.target.value } : r)))} placeholder="Positionsname" />
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </CardContent>
           </Card>
         </div>
       ) : (
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-[400px_1fr] gap-6">
+        <div className="max-w-[1600px] mx-auto grid xl:grid-cols-[320px_minmax(0,1fr)_300px] gap-6">
           <Card className="rounded-2xl shadow-xl border border-blue-100 bg-white/90 print:hidden">
             <CardHeader>
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <CardTitle className="text-2xl text-blue-800">Taktikboard Lady Hawks</CardTitle>
-                  <p className="text-sm text-slate-600">Mit Drag & Drop, Login/Cloud und Trainingsplanung.</p>
+                  <p className="text-sm text-slate-600">Ohne Gegnerteam, mit rechter Kaderliste und extra Bank.</p>
                 </div>
                 <div className="flex gap-2">
                   <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><Home className="w-4 h-4" /></Button>
@@ -868,52 +834,14 @@ export default function FussballTaktikboardApp() {
               </div>
 
               <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm font-medium text-blue-800">Spielerinnen</div>
-                  <Users className="w-4 h-4 text-blue-700" />
-                </div>
-                <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => setCurrentView("roster")}>Zur Spielerinnen-Seite</Button>
-                <p className="text-xs text-slate-500">Dort kannst du Spielerinnen per Drag & Drop aufs Spielfeld bringen.</p>
+                <div className="text-sm font-medium text-blue-800">Kopfbereich</div>
+                <Input value={boardTitle} onChange={(e) => setBoardTitle(e.target.value)} placeholder="Titel" />
+                <Input value={matchInfo} onChange={(e) => setMatchInfo(e.target.value)} placeholder="z. B. Gegner / Datum / Thema" />
               </div>
 
               <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm font-medium text-blue-800">Web teilen</div>
-                  <Share2 className="w-4 h-4 text-blue-700" />
-                </div>
-                <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={generateShareLink}><Share2 className="w-4 h-4 mr-2" /> Link erzeugen</Button>
-                {shareLink ? (
-                  <>
-                    <Textarea value={shareLink} readOnly className="min-h-[90px] bg-white" />
-                    <Button variant="outline" className="w-full rounded-xl border-blue-200" onClick={async () => {
-                      try { await navigator.clipboard.writeText(shareLink); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch {}
-                    }}>
-                      {copied ? <Check className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
-                      {copied ? "Link kopiert" : "Link kopieren"}
-                    </Button>
-                  </>
-                ) : <p className="text-xs text-slate-500">Erzeuge einen Link für deinen Co-Trainer.</p>}
-              </div>
-
-              <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
-                <label className="block">
-                  <span className="text-sm font-medium mb-2 block text-blue-800">Teamlogo hochladen</span>
-                  <Input type="file" accept="image/*" onChange={handleLogoUpload} />
-                </label>
-                <label className="block">
-                  <span className="text-sm font-medium mb-2 block text-blue-800">Gespeicherte Datei laden</span>
-                  <Input type="file" accept="application/json" onChange={importBoardFile} />
-                </label>
-              </div>
-
-              <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100">
-                <div className="text-sm font-medium mb-3 text-blue-800">Kopfbereich</div>
-                <div className="space-y-3 mb-4">
-                  <Input value={boardTitle} onChange={(e) => setBoardTitle(e.target.value)} placeholder="Titel" />
-                  <Input value={matchInfo} onChange={(e) => setMatchInfo(e.target.value)} placeholder="z. B. Gegner / Datum / Thema" />
-                </div>
-                <div className="text-sm font-medium mb-3 text-blue-800">Formation wählen</div>
-                <div className="grid grid-cols-2 gap-2 mb-4">
+                <div className="text-sm font-medium text-blue-800">Formation wählen</div>
+                <div className="grid grid-cols-2 gap-2">
                   {Object.keys(formations).map((formation) => (
                     <Button key={formation} type="button" variant={selectedFormation === formation ? "default" : "outline"} className={`rounded-xl ${selectedFormation === formation ? "bg-blue-700 hover:bg-blue-800" : "border-blue-200"}`} onClick={() => applyFormation(formation)}>{formation}</Button>
                   ))}
@@ -921,21 +849,21 @@ export default function FussballTaktikboardApp() {
               </div>
 
               <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm font-medium text-blue-800">Auswahl</div>
-                  {selected ? <Badge variant="secondary">{selectedId === "ball" ? "Ball" : selected.id}</Badge> : <Badge variant="outline">Nichts gewählt</Badge>}
-                </div>
+                <div className="text-sm font-medium text-blue-800">Auswahl</div>
                 {selectedId && selectedId !== "ball" ? (
                   <>
                     <Input value={selectedRosterPlayer?.name || ""} onChange={(e) => updateSelectedName(e.target.value)} placeholder="Name der Spielerin" />
                     <Input value={selected?.number || ""} onChange={(e) => updateSelectedNumber(e.target.value)} placeholder="Nummer" />
-                    <Input value={selected?.role || ""} onChange={(e) => updateSelectedRole(e.target.value)} placeholder="Position, z. B. IV" />
+                    <Input value={selected?.role || ""} onChange={(e) => updateSelectedRole(e.target.value)} placeholder="Positionscode" />
+                    <Input value={selectedRosterPlayer?.customRoleLabel || selected?.role || ""} onChange={(e) => updateSelectedRoleLabel(e.target.value)} placeholder="Manueller Positionsname" />
                     <Button variant="outline" className="w-full rounded-xl border-blue-200" onClick={toggleSelectedLock}><Lock className="w-4 h-4 mr-2" /> {selected?.locked ? "Position freigeben" : "Position fixieren"}</Button>
                     <Button variant="destructive" className="w-full rounded-xl" onClick={removeSelected}><Trash2 className="w-4 h-4 mr-2" /> Aus Aufstellung entfernen</Button>
                   </>
                 ) : selectedId === "ball" ? (
                   <Button variant="destructive" className="w-full rounded-xl" onClick={removeSelected}><CircleDot className="w-4 h-4 mr-2" /> Ball zurücksetzen</Button>
-                ) : <p className="text-sm text-slate-500">Klicke auf eine Spielerin oder den Ball.</p>}
+                ) : (
+                  <p className="text-sm text-slate-500">Klicke auf eine Spielerin oder den Ball.</p>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -966,7 +894,7 @@ export default function FussballTaktikboardApp() {
                 className="relative w-full aspect-[7/10] rounded-[28px] overflow-hidden select-none touch-none shadow-inner"
                 style={{ background: "linear-gradient(180deg, #1d4ed8 0%, #2563eb 12%, #1f9d55 12%, #178347 100%)" }}
               >
-                <div className="absolute right-4 top-4 z-10 rounded-xl bg-white/90 px-3 py-2 text-xs text-slate-600 shadow">Drag & Drop vom Kader hierher</div>
+                <div className="absolute right-4 top-4 z-10 rounded-xl bg-white/90 px-3 py-2 text-xs text-slate-600 shadow">Ziehe Spielerinnen von rechts hier hinein</div>
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "linear-gradient(45deg, rgba(255,255,255,0.55) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.55) 75%, transparent 75%, transparent)", backgroundSize: "40px 40px" }} />
                 <div className="absolute inset-0 opacity-20">
                   {Array.from({ length: 12 }).map((_, i) => (
@@ -977,8 +905,6 @@ export default function FussballTaktikboardApp() {
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 border-2 border-white/90 rounded-full" />
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full" />
                 <div className="absolute left-4 right-4 top-1/2 border-t-2 border-white/90" />
-                <div className="absolute left-1/2 -translate-x-1/2 top-4 w-44 h-16 border-2 border-white/90 border-t-0 rounded-b-2xl" />
-                <div className="absolute left-1/2 -translate-x-1/2 top-4 w-20 h-7 border-2 border-white/90 border-t-0 rounded-b-xl" />
                 <div className="absolute left-1/2 -translate-x-1/2 bottom-4 w-44 h-16 border-2 border-white/90 border-b-0 rounded-t-2xl" />
                 <div className="absolute left-1/2 -translate-x-1/2 bottom-4 w-20 h-7 border-2 border-white/90 border-b-0 rounded-t-xl" />
 
@@ -994,16 +920,15 @@ export default function FussballTaktikboardApp() {
                   {arrowStart && <circle cx={`${arrowStart.x}%`} cy={`${arrowStart.y}%`} r="6" fill="white" />}
                 </svg>
 
-                <div className="absolute left-1/2 -translate-x-1/2 top-2 text-white/90 text-xs font-semibold tracking-widest">GEGNER</div>
                 <div className="absolute left-1/2 -translate-x-1/2 bottom-2 text-white/90 text-xs font-semibold tracking-widest">DEIN TEAM</div>
 
-                {players.map((player) => {
+                {startingPlayers.map((player) => {
                   const rosterPlayer = roster.find((r) => r.id === player.rosterId);
                   return (
                     <div key={player.id}>
                       <PlayerChip item={player} selected={selectedId === player.id} locked={!!player.locked} onPointerDown={startDrag("player", player.id)} onClick={() => setSelectedId(player.id)} />
                       <div className="absolute -translate-x-1/2 text-[10px] font-medium text-white bg-slate-900/45 px-2 py-0.5 rounded-full" style={{ left: `${player.x}%`, top: `calc(${player.y}% + 30px)` }}>
-                        {rosterPlayer?.name || player.id} · {player.role || ""}{player.locked ? " · FIX" : ""}
+                        {rosterPlayer?.name || player.id} · {rosterPlayer?.customRoleLabel || player.role || ""}{player.locked ? " · FIX" : ""}
                       </div>
                     </div>
                   );
@@ -1013,17 +938,54 @@ export default function FussballTaktikboardApp() {
               </div>
 
               <div className="grid lg:grid-cols-[1fr_320px] gap-4 mt-4">
-                <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600 print:hidden">
-                  <Badge className="rounded-full bg-blue-700"><Shield className="w-3 h-3 mr-1" /> Heim</Badge>
-                  <Badge variant="outline" className="rounded-full"><Hash className="w-3 h-3 mr-1" /> Nummern sichtbar</Badge>
-                  <Badge variant="outline" className="rounded-full"><Lock className="w-3 h-3 mr-1" /> Positionen fixierbar</Badge>
-                  <Badge variant="outline" className="rounded-full"><Grip className="w-3 h-3 mr-1" /> Kader per Drag & Drop</Badge>
+                <div>
+                  <div className="font-semibold text-slate-900 mb-2">Bank</div>
+                  <div className="flex flex-wrap gap-2">
+                    {benchPlayers.map((player) => (
+                      <div key={player.id} className="rounded-xl border border-blue-100 bg-blue-50 px-3 py-2 text-sm text-slate-700 flex items-center gap-2">
+                        <span className={`w-7 h-7 rounded-full ${player.color} flex items-center justify-center text-xs font-bold border border-white`}>{player.number}</span>
+                        <span>{player.name}</span>
+                        <span className="text-slate-500">· {player.customRoleLabel || player.role}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
                 <div className="border border-blue-100 rounded-2xl p-4 bg-blue-50 text-sm text-slate-700">
                   <div className="font-semibold mb-2">Kurznotizen</div>
                   <div className="whitespace-pre-wrap text-slate-600">{notes}</div>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-2xl shadow-xl border border-blue-100 bg-white/90 print:hidden">
+            <CardHeader>
+              <CardTitle className="text-xl text-blue-800">Spielerinnen rechts</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 max-h-[85vh] overflow-auto">
+              {roster.map((player) => {
+                const onBoard = players.some((p) => p.rosterId === player.id && p.team === "home");
+                return (
+                  <div key={player.id} className="rounded-2xl border border-blue-100 p-3 bg-white shadow-sm space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className={`w-9 h-9 rounded-full ${player.color} border-2 border-white shadow flex items-center justify-center text-sm font-bold`}>
+                        {player.number}
+                      </div>
+                      {onBoard ? <Badge variant="secondary">Im Feld</Badge> : <Badge variant="outline">Bank</Badge>}
+                    </div>
+                    <div className="font-semibold text-slate-900">{player.name}</div>
+                    <div className="text-sm text-slate-500">{player.customRoleLabel || player.role}</div>
+                    <div className="flex gap-2">
+                      <div draggable={!onBoard} onDragStart={handleRosterDragStart(player)} className={`flex-1 rounded-xl border px-3 py-2 text-sm flex items-center justify-center gap-2 ${onBoard ? "opacity-50 cursor-not-allowed" : "cursor-grab border-blue-200 bg-blue-50"}`}>
+                        <Grip className="w-4 h-4" /> Ziehen
+                      </div>
+                      <Button className="flex-1 rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => addRosterPlayerToBoard(player)} disabled={onBoard}>
+                        {onBoard ? "Im Feld" : "Einfügen"}
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
             </CardContent>
           </Card>
         </div>
