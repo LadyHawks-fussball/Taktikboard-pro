@@ -32,34 +32,53 @@ import {
   Lock,
   Hash,
   ImagePlus,
+  UserPlus,
 } from "lucide-react";
 
 const initialHome = [
-  { id: "h1", x: 50, y: 90, label: "1", number: "1", role: "TW", color: "bg-blue-700" },
-  { id: "h2", x: 18, y: 72, label: "2", number: "2", role: "LV", color: "bg-blue-700" },
-  { id: "h3", x: 38, y: 74, label: "3", number: "3", role: "IV", color: "bg-blue-700" },
-  { id: "h4", x: 62, y: 74, label: "4", number: "4", role: "IV", color: "bg-blue-700" },
-  { id: "h5", x: 82, y: 72, label: "5", number: "5", role: "RV", color: "bg-blue-700" },
-  { id: "h6", x: 28, y: 52, label: "6", number: "6", role: "ZM", color: "bg-blue-700" },
-  { id: "h7", x: 50, y: 56, label: "7", number: "7", role: "6", color: "bg-blue-700" },
-  { id: "h8", x: 72, y: 52, label: "8", number: "8", role: "ZM", color: "bg-blue-700" },
-  { id: "h9", x: 24, y: 28, label: "9", number: "9", role: "LA", color: "bg-blue-700" },
-  { id: "h10", x: 50, y: 22, label: "10", number: "10", role: "ST", color: "bg-blue-700" },
-  { id: "h11", x: 76, y: 28, label: "11", number: "11", role: "RA", color: "bg-blue-700" },
+  { id: "h1", x: 50, y: 90, label: "1", number: "1", role: "TW", color: "bg-blue-700", locked: false, team: "home", rosterId: "r1" },
+  { id: "h2", x: 18, y: 72, label: "2", number: "2", role: "LV", color: "bg-blue-700", locked: false, team: "home", rosterId: "r2" },
+  { id: "h3", x: 38, y: 74, label: "3", number: "3", role: "IV", color: "bg-blue-700", locked: false, team: "home", rosterId: "r3" },
+  { id: "h4", x: 62, y: 74, label: "4", number: "4", role: "IV", color: "bg-blue-700", locked: false, team: "home", rosterId: "r4" },
+  { id: "h5", x: 82, y: 72, label: "5", number: "5", role: "RV", color: "bg-blue-700", locked: false, team: "home", rosterId: "r5" },
+  { id: "h6", x: 28, y: 52, label: "6", number: "6", role: "ZM", color: "bg-blue-700", locked: false, team: "home", rosterId: "r6" },
+  { id: "h7", x: 50, y: 56, label: "7", number: "7", role: "6", color: "bg-blue-700", locked: false, team: "home", rosterId: "r7" },
+  { id: "h8", x: 72, y: 52, label: "8", number: "8", role: "ZM", color: "bg-blue-700", locked: false, team: "home", rosterId: "r8" },
+  { id: "h9", x: 24, y: 28, label: "9", number: "9", role: "LA", color: "bg-blue-700", locked: false, team: "home", rosterId: "r9" },
+  { id: "h10", x: 50, y: 22, label: "10", number: "10", role: "ST", color: "bg-blue-700", locked: false, team: "home", rosterId: "r10" },
+  { id: "h11", x: 76, y: 28, label: "11", number: "11", role: "RA", color: "bg-blue-700", locked: false, team: "home", rosterId: "r11" },
 ];
 
 const initialAway = [
-  { id: "a1", x: 50, y: 10, label: "1", number: "1", role: "TW", color: "bg-white text-red-700" },
-  { id: "a2", x: 18, y: 28, label: "2", number: "2", role: "LV", color: "bg-white text-red-700" },
-  { id: "a3", x: 38, y: 26, label: "3", number: "3", role: "IV", color: "bg-white text-red-700" },
-  { id: "a4", x: 62, y: 26, label: "4", number: "4", role: "IV", color: "bg-white text-red-700" },
-  { id: "a5", x: 82, y: 28, label: "5", number: "5", role: "RV", color: "bg-white text-red-700" },
-  { id: "a6", x: 28, y: 48, label: "6", number: "6", role: "ZM", color: "bg-white text-red-700" },
-  { id: "a7", x: 50, y: 44, label: "7", number: "7", role: "6", color: "bg-white text-red-700" },
-  { id: "a8", x: 72, y: 48, label: "8", number: "8", role: "ZM", color: "bg-white text-red-700" },
-  { id: "a9", x: 24, y: 72, label: "9", number: "9", role: "LA", color: "bg-white text-red-700" },
-  { id: "a10", x: 50, y: 78, label: "10", number: "10", role: "ST", color: "bg-white text-red-700" },
-  { id: "a11", x: 76, y: 72, label: "11", number: "11", role: "RA", color: "bg-white text-red-700" },
+  { id: "a1", x: 50, y: 10, label: "1", number: "1", role: "TW", color: "bg-white text-red-700", locked: false, team: "away" },
+  { id: "a2", x: 18, y: 28, label: "2", number: "2", role: "LV", color: "bg-white text-red-700", locked: false, team: "away" },
+  { id: "a3", x: 38, y: 26, label: "3", number: "3", role: "IV", color: "bg-white text-red-700", locked: false, team: "away" },
+  { id: "a4", x: 62, y: 26, label: "4", number: "4", role: "IV", color: "bg-white text-red-700", locked: false, team: "away" },
+  { id: "a5", x: 82, y: 28, label: "5", number: "5", role: "RV", color: "bg-white text-red-700", locked: false, team: "away" },
+  { id: "a6", x: 28, y: 48, label: "6", number: "6", role: "ZM", color: "bg-white text-red-700", locked: false, team: "away" },
+  { id: "a7", x: 50, y: 44, label: "7", number: "7", role: "6", color: "bg-white text-red-700", locked: false, team: "away" },
+  { id: "a8", x: 72, y: 48, label: "8", number: "8", role: "ZM", color: "bg-white text-red-700", locked: false, team: "away" },
+  { id: "a9", x: 24, y: 72, label: "9", number: "9", role: "LA", color: "bg-white text-red-700", locked: false, team: "away" },
+  { id: "a10", x: 50, y: 78, label: "10", number: "10", role: "ST", color: "bg-white text-red-700", locked: false, team: "away" },
+  { id: "a11", x: 76, y: 72, label: "11", number: "11", role: "RA", color: "bg-white text-red-700", locked: false, team: "away" },
+];
+
+const initialRoster = [
+  { id: "r1", name: "Spielerin 1", number: "1", role: "TW", color: "bg-blue-700" },
+  { id: "r2", name: "Spielerin 2", number: "2", role: "LV", color: "bg-blue-700" },
+  { id: "r3", name: "Spielerin 3", number: "3", role: "IV", color: "bg-blue-700" },
+  { id: "r4", name: "Spielerin 4", number: "4", role: "IV", color: "bg-blue-700" },
+  { id: "r5", name: "Spielerin 5", number: "5", role: "RV", color: "bg-blue-700" },
+  { id: "r6", name: "Spielerin 6", number: "6", role: "ZM", color: "bg-blue-700" },
+  { id: "r7", name: "Spielerin 7", number: "7", role: "6", color: "bg-blue-700" },
+  { id: "r8", name: "Spielerin 8", number: "8", role: "ZM", color: "bg-blue-700" },
+  { id: "r9", name: "Spielerin 9", number: "9", role: "LA", color: "bg-blue-700" },
+  { id: "r10", name: "Spielerin 10", number: "10", role: "ST", color: "bg-blue-700" },
+  { id: "r11", name: "Spielerin 11", number: "11", role: "RA", color: "bg-blue-700" },
+  { id: "r12", name: "Spielerin 12", number: "12", role: "BANK", color: "bg-blue-700" },
+  { id: "r13", name: "Spielerin 13", number: "13", role: "BANK", color: "bg-white text-blue-700" },
+  { id: "r14", name: "Spielerin 14", number: "14", role: "BANK", color: "bg-blue-700" },
+  { id: "r15", name: "Spielerin 15", number: "15", role: "BANK", color: "bg-white text-blue-700" },
 ];
 
 const initialBall = { id: "ball", x: 50, y: 50, label: "", color: "bg-white" };
@@ -104,33 +123,6 @@ const formations = {
     { id: "h10", x: 40, y: 24, role: "ST" },
     { id: "h11", x: 60, y: 24, role: "ST" },
   ],
-  "4-2-3-1": [
-    { id: "h1", x: 50, y: 90, role: "TW" },
-    { id: "h2", x: 18, y: 72, role: "LV" },
-    { id: "h3", x: 38, y: 74, role: "IV" },
-    { id: "h4", x: 62, y: 74, role: "IV" },
-    { id: "h5", x: 82, y: 72, role: "RV" },
-    { id: "h6", x: 38, y: 56, role: "6" },
-    { id: "h7", x: 62, y: 56, role: "6" },
-    { id: "h8", x: 22, y: 38, role: "LA" },
-    { id: "h9", x: 50, y: 40, role: "10" },
-    { id: "h10", x: 78, y: 38, role: "RA" },
-    { id: "h11", x: 50, y: 20, role: "ST" },
-  ],
-};
-
-const defaultPlayerNames = {
-  h1: "Spielerin 1",
-  h2: "Spielerin 2",
-  h3: "Spielerin 3",
-  h4: "Spielerin 4",
-  h5: "Spielerin 5",
-  h6: "Spielerin 6",
-  h7: "Spielerin 7",
-  h8: "Spielerin 8",
-  h9: "Spielerin 9",
-  h10: "Spielerin 10",
-  h11: "Spielerin 11",
 };
 
 function clamp(value, min, max) {
@@ -144,7 +136,6 @@ function PlayerChip({ item, selected, locked, onPointerDown, onClick }) {
       onClick={onClick}
       className={`absolute -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full ${item.color} text-xs font-bold shadow-lg border-2 ${selected ? "border-yellow-300 scale-110" : "border-white/80"} transition flex items-center justify-center`}
       style={{ left: `${item.x}%`, top: `${item.y}%`, cursor: locked ? "not-allowed" : "grab" }}
-      title={locked ? "Position fixiert" : "Beweglich"}
     >
       {item.number || item.label}
     </button>
@@ -167,13 +158,13 @@ function decodeBoardState(value) {
   }
 }
 
-function buildBoardPayload({ players, arrows, ball, formation, playerNames, boardTitle, matchInfo, clubLogo, notes }) {
+function buildBoardPayload({ players, arrows, ball, formation, roster, boardTitle, matchInfo, clubLogo, notes }) {
   return {
     players,
     arrows,
     ball,
     formation,
-    playerNames,
+    roster,
     boardTitle,
     matchInfo,
     clubLogo,
@@ -185,17 +176,17 @@ function buildBoardPayload({ players, arrows, ball, formation, playerNames, boar
 export default function FussballTaktikboardApp() {
   const [currentView, setCurrentView] = useState("start");
   const [players, setPlayers] = useState([...initialHome, ...initialAway]);
+  const [roster, setRoster] = useState(initialRoster);
   const [ball, setBall] = useState(initialBall);
   const [selectedId, setSelectedId] = useState(null);
-  const [newLabel, setNewLabel] = useState("12");
+  const [newPlayerName, setNewPlayerName] = useState("Neue Spielerin");
+  const [newPlayerNumber, setNewPlayerNumber] = useState("16");
   const [boardTitle, setBoardTitle] = useState("Taktikboard Fußball");
   const [matchInfo, setMatchInfo] = useState("Training / Spielbesprechung");
   const [clubLogo, setClubLogo] = useState("");
-  const [teamColor, setTeamColor] = useState("bg-blue-700");
   const [selectedFormation, setSelectedFormation] = useState("4-3-3");
   const [mode, setMode] = useState("move");
   const [selectedArrowId, setSelectedArrowId] = useState(null);
-  const [playerNames, setPlayerNames] = useState(defaultPlayerNames);
   const [savedSetups, setSavedSetups] = useState([]);
   const [arrows, setArrows] = useState([]);
   const [arrowStart, setArrowStart] = useState(null);
@@ -210,9 +201,14 @@ export default function FussballTaktikboardApp() {
     return players.find((p) => p.id === selectedId) || null;
   }, [selectedId, players, ball]);
 
+  const selectedRosterPlayer = useMemo(() => {
+    if (!selected || !selected.rosterId) return null;
+    return roster.find((r) => r.id === selected.rosterId) || null;
+  }, [selected, roster]);
+
   useEffect(() => {
     try {
-      const raw = localStorage.getItem("taktikboard_saved_setups_v2");
+      const raw = localStorage.getItem("taktikboard_saved_setups_v3");
       if (raw) setSavedSetups(JSON.parse(raw));
     } catch {}
     const hash = window.location.hash.replace("#shared=", "");
@@ -227,16 +223,16 @@ export default function FussballTaktikboardApp() {
 
   useEffect(() => {
     try {
-      localStorage.setItem("taktikboard_saved_setups_v2", JSON.stringify(savedSetups));
+      localStorage.setItem("taktikboard_saved_setups_v3", JSON.stringify(savedSetups));
     } catch {}
   }, [savedSetups]);
 
   const applyExternalBoard = (data) => {
     setPlayers(data.players || [...initialHome, ...initialAway]);
+    setRoster(data.roster || initialRoster);
     setArrows(data.arrows || []);
     setBall(data.ball || initialBall);
     setSelectedFormation(data.formation || "4-3-3");
-    setPlayerNames(data.playerNames || defaultPlayerNames);
     setBoardTitle(data.boardTitle || "Taktikboard Fußball");
     setMatchInfo(data.matchInfo || "Training / Spielbesprechung");
     setClubLogo(data.clubLogo || "");
@@ -283,12 +279,12 @@ export default function FussballTaktikboardApp() {
 
   const resetBoard = () => {
     setPlayers([...initialHome, ...initialAway]);
+    setRoster(initialRoster);
     setBall(initialBall);
     setSelectedId(null);
     setArrows([]);
     setArrowStart(null);
     setSelectedArrowId(null);
-    setPlayerNames(defaultPlayerNames);
     setSelectedFormation("4-3-3");
     setBoardTitle("Taktikboard Fußball");
     setMatchInfo("Training / Spielbesprechung");
@@ -298,34 +294,54 @@ export default function FussballTaktikboardApp() {
   const applyFormation = (formationKey) => {
     const formation = formations[formationKey] || formations["4-3-3"];
     setPlayers((prev) => {
-      const homePlayers = prev.filter((p) => p.id.startsWith("h"));
+      const homePlayers = prev.filter((p) => p.team === "home");
       const updatedHome = homePlayers.map((p) => {
         const slot = formation.find((f) => f.id === p.id);
         return slot ? { ...p, x: slot.x, y: slot.y, role: slot.role } : p;
       });
-      const awayPlayers = prev.filter((p) => p.id.startsWith("a") || p.id.startsWith("c"));
-      return [...updatedHome, ...awayPlayers];
+      const others = prev.filter((p) => p.team !== "home");
+      return [...updatedHome, ...others];
     });
     setSelectedFormation(formationKey);
   };
 
-  const addCustomPlayer = () => {
-    const id = `c${Date.now()}`;
+  const addRosterPlayer = () => {
+    const id = `r${Date.now()}`;
+    setRoster((prev) => [
+      ...prev,
+      {
+        id,
+        name: newPlayerName || `Spielerin ${newPlayerNumber}`,
+        number: newPlayerNumber || "16",
+        role: "BANK",
+        color: "bg-blue-700",
+      },
+    ]);
+    setNewPlayerName("Neue Spielerin");
+    setNewPlayerNumber(String(Number(newPlayerNumber || 16) + 1));
+  };
+
+  const addRosterPlayerToBoard = (rosterPlayer) => {
+    const alreadyOnBoard = players.some((p) => p.rosterId === rosterPlayer.id && p.team === "home");
+    if (alreadyOnBoard) return;
+    const id = `c${Date.now()}${Math.floor(Math.random() * 1000)}`;
     setPlayers((prev) => [
       ...prev,
       {
         id,
         x: 50,
         y: 50,
-        label: newLabel || "12",
-        number: newLabel || "12",
-        role: "BANK",
-        color: teamColor,
+        label: rosterPlayer.number,
+        number: rosterPlayer.number,
+        role: rosterPlayer.role,
+        color: rosterPlayer.color,
         locked: false,
+        team: "home",
+        rosterId: rosterPlayer.id,
       },
     ]);
-    setPlayerNames((prev) => ({ ...prev, [id]: `Spielerin ${newLabel || "12"}` }));
     setSelectedId(id);
+    setCurrentView("board");
   };
 
   const removeSelected = () => {
@@ -339,20 +355,23 @@ export default function FussballTaktikboardApp() {
     setSelectedId(null);
   };
 
-  const renamePlayerFullName = (value) => {
-    if (!selectedId || selectedId === "ball") return;
-    setPlayerNames((prev) => ({ ...prev, [selectedId]: value }));
+  const updateSelectedName = (value) => {
+    if (!selected?.rosterId) return;
+    setRoster((prev) => prev.map((r) => (r.id === selected.rosterId ? { ...r, name: value } : r)));
   };
 
   const updateSelectedNumber = (value) => {
-    if (!selectedId || selectedId === "ball") return;
+    if (!selected?.rosterId) return;
     const cleaned = value.replace(/[^0-9]/g, "").slice(0, 2);
-    setPlayers((prev) => prev.map((p) => (p.id === selectedId ? { ...p, number: cleaned, label: cleaned || p.label } : p)));
+    setRoster((prev) => prev.map((r) => (r.id === selected.rosterId ? { ...r, number: cleaned } : r)));
+    setPlayers((prev) => prev.map((p) => (p.rosterId === selected.rosterId ? { ...p, number: cleaned, label: cleaned } : p)));
   };
 
   const updateSelectedRole = (value) => {
-    if (!selectedId || selectedId === "ball") return;
-    setPlayers((prev) => prev.map((p) => (p.id === selectedId ? { ...p, role: value.slice(0, 5).toUpperCase() } : p)));
+    if (!selected?.rosterId) return;
+    const role = value.slice(0, 5).toUpperCase();
+    setRoster((prev) => prev.map((r) => (r.id === selected.rosterId ? { ...r, role } : r)));
+    setPlayers((prev) => prev.map((p) => (p.rosterId === selected.rosterId ? { ...p, role } : p)));
   };
 
   const toggleSelectedLock = () => {
@@ -395,7 +414,7 @@ export default function FussballTaktikboardApp() {
   };
 
   const exportBoardFile = () => {
-    const data = buildBoardPayload({ players, arrows, ball, formation: selectedFormation, playerNames, boardTitle, matchInfo, clubLogo, notes });
+    const data = buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes });
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
@@ -416,7 +435,7 @@ export default function FussballTaktikboardApp() {
 
   const saveSetup = () => {
     const name = `Aufstellung ${savedSetups.length + 1}`;
-    const setup = { id: Date.now().toString(), name, ...buildBoardPayload({ players, arrows, ball, formation: selectedFormation, playerNames, boardTitle, matchInfo, clubLogo, notes }) };
+    const setup = { id: Date.now().toString(), name, ...buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes }) };
     setSavedSetups((prev) => [setup, ...prev]);
   };
 
@@ -428,7 +447,7 @@ export default function FussballTaktikboardApp() {
   };
 
   const generateShareLink = async () => {
-    const payload = buildBoardPayload({ players, arrows, ball, formation: selectedFormation, playerNames, boardTitle, matchInfo, clubLogo, notes });
+    const payload = buildBoardPayload({ players, arrows, ball, formation: selectedFormation, roster, boardTitle, matchInfo, clubLogo, notes });
     const encoded = encodeBoardState(payload);
     const url = `${window.location.origin}${window.location.pathname}#shared=${encoded}`;
     setShareLink(url);
@@ -511,22 +530,14 @@ export default function FussballTaktikboardApp() {
               <div>
                 <div className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">Web-App für den PC</div>
                 <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2">Taktikboard Pro Blau/Weiß</h1>
-                <p className="text-slate-600 mt-3 max-w-2xl">Desktop- und Web-Taktikboard in Vereinsfarben. Mit Teamlogo, fixen Positionen, Nummern und Teilen-Link für den Co-Trainer.</p>
-              </div>
-              <div className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-slate-600 min-w-[240px]">
-                <div className="font-semibold text-slate-900">Fertig für den Verein</div>
-                <div className="mt-2">• Blau/Weißes Design</div>
-                <div>• Teamlogo hochladen</div>
-                <div>• Spielerinnen fixieren</div>
-                <div>• Nummern und Positionen vergeben</div>
+                <p className="text-slate-600 mt-3 max-w-2xl">Mit eigenem Kaderbereich, damit du Spielerinnen per Drag & Drop oder Klick in die Aufstellung bringen kannst.</p>
               </div>
             </div>
-
             <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5 mt-10">
               <StartCard icon={<Monitor className="w-8 h-8" />} title="Neues Taktikboard" text="Direkt mit Formation, Spielerinnen und Pfeilen starten." onClick={() => openPresetView("board")} />
+              <StartCard icon={<Users className="w-8 h-8" />} title="Spielerinnen-Kader" text="Kader verwalten und Spielerinnen in die Aufstellung ziehen." onClick={() => setCurrentView("roster")} />
               <StartCard icon={<FolderOpen className="w-8 h-8" />} title="Gespeicherte Taktiken" text="Gespeicherte Aufstellungen öffnen und weiter bearbeiten." onClick={() => setCurrentView("library")} />
-              <StartCard icon={<ClipboardList className="w-8 h-8" />} title="Trainingsplanung" text="Übungen, Spielformen und Abläufe für die Einheit vorbereiten." onClick={() => openPresetView("training")} />
-              <StartCard icon={<Users className="w-8 h-8" />} title="Matchbesprechung" text="Gegnerbild und Spielplan für dein Team und den Co-Trainer." onClick={() => openPresetView("match")} />
+              <StartCard icon={<ClipboardList className="w-8 h-8" />} title="Matchbesprechung" text="Gegnerbild und Spielplan für dein Team und den Co-Trainer." onClick={() => openPresetView("match")} />
             </div>
           </div>
         </div>
@@ -564,6 +575,56 @@ export default function FussballTaktikboardApp() {
             )}
           </div>
         </div>
+      ) : currentView === "roster" ? (
+        <div className="max-w-6xl mx-auto space-y-6">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <div className="text-3xl font-bold text-slate-900">Spielerinnen-Kader</div>
+              <div className="text-slate-600 mt-1">Per Klick eine Spielerin ins Board übernehmen. Danach auf dem Spielfeld frei platzieren.</div>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><ArrowLeft className="w-4 h-4 mr-2" /> Menü</Button>
+              <Button className="rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => setCurrentView("board")}>Zum Board</Button>
+            </div>
+          </div>
+
+          <Card className="rounded-3xl border-blue-100">
+            <CardContent className="p-6 grid lg:grid-cols-[320px_1fr] gap-6">
+              <div className="space-y-3">
+                <div className="text-lg font-bold text-slate-900">Neue Spielerin anlegen</div>
+                <Input value={newPlayerName} onChange={(e) => setNewPlayerName(e.target.value)} placeholder="Name" />
+                <Input value={newPlayerNumber} onChange={(e) => setNewPlayerNumber(e.target.value.replace(/[^0-9]/g, "").slice(0, 2))} placeholder="Nummer" />
+                <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={addRosterPlayer}><UserPlus className="w-4 h-4 mr-2" /> Zum Kader hinzufügen</Button>
+                <p className="text-sm text-slate-500">Tipp: Im nächsten Schritt kannst du jede Spielerin mit einem Klick in die Aufstellung übernehmen.</p>
+              </div>
+
+              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {roster.map((player) => {
+                  const onBoard = players.some((p) => p.rosterId === player.id && p.team === "home");
+                  return (
+                    <Card key={player.id} className="rounded-2xl border-blue-100 shadow-sm">
+                      <CardContent className="p-4 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className={`w-10 h-10 rounded-full ${player.color} border-2 border-white shadow flex items-center justify-center text-sm font-bold`}>
+                            {player.number}
+                          </div>
+                          {onBoard ? <Badge variant="secondary">Im Board</Badge> : <Badge variant="outline">Kader</Badge>}
+                        </div>
+                        <div>
+                          <div className="font-bold text-slate-900">{player.name}</div>
+                          <div className="text-sm text-slate-500">Position: {player.role}</div>
+                        </div>
+                        <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => addRosterPlayerToBoard(player)} disabled={onBoard}>
+                          {onBoard ? "Schon im Board" : "In Aufstellung übernehmen"}
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       ) : (
         <div className="max-w-7xl mx-auto grid lg:grid-cols-[400px_1fr] gap-6">
           <Card className="rounded-2xl shadow-xl border border-blue-100 bg-white/90 print:hidden">
@@ -571,10 +632,11 @@ export default function FussballTaktikboardApp() {
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <CardTitle className="text-2xl text-blue-800">Taktikboard Fußball</CardTitle>
-                  <p className="text-sm text-slate-600">Vereinsdesign Blau/Weiß mit Teamlogo und fixen Positionen.</p>
+                  <p className="text-sm text-slate-600">Mit extra Spielerinnen-Seite für die Aufstellung.</p>
                 </div>
                 <div className="flex gap-2">
                   <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><Home className="w-4 h-4" /></Button>
+                  <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("roster")}><Users className="w-4 h-4" /></Button>
                   <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("library")}><FolderOpen className="w-4 h-4" /></Button>
                 </div>
               </div>
@@ -592,6 +654,15 @@ export default function FussballTaktikboardApp() {
                   <Button variant="outline" className="rounded-xl border-blue-200" onClick={printBoard}><Printer className="w-4 h-4 mr-2" /> Drucken</Button>
                   <Button variant="outline" className="rounded-xl border-blue-200" onClick={exportPDF}><FileText className="w-4 h-4 mr-2" /> PDF</Button>
                 </div>
+              </div>
+
+              <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="text-sm font-medium text-blue-800">Spielerinnen</div>
+                  <Users className="w-4 h-4 text-blue-700" />
+                </div>
+                <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => setCurrentView("roster")}>Zur Spielerinnen-Seite</Button>
+                <p className="text-xs text-slate-500">Dort kannst du den Kader verwalten und Spielerinnen in die Aufstellung übernehmen.</p>
               </div>
 
               <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
@@ -636,15 +707,6 @@ export default function FussballTaktikboardApp() {
                     <Button key={formation} type="button" variant={selectedFormation === formation ? "default" : "outline"} className={`rounded-xl ${selectedFormation === formation ? "bg-blue-700 hover:bg-blue-800" : "border-blue-200"}`} onClick={() => applyFormation(formation)}>{formation}</Button>
                   ))}
                 </div>
-                <div className="text-sm font-medium mb-3 text-blue-800">Spielerin hinzufügen</div>
-                <div className="space-y-3">
-                  <Input value={newLabel} onChange={(e) => setNewLabel(e.target.value.replace(/[^0-9]/g, "").slice(0, 2))} placeholder="Nummer" />
-                  <div className="flex gap-2">
-                    <Button type="button" variant={teamColor === "bg-blue-700" ? "default" : "outline"} className={`rounded-xl flex-1 ${teamColor === "bg-blue-700" ? "bg-blue-700 hover:bg-blue-800" : "border-blue-200"}`} onClick={() => setTeamColor("bg-blue-700")}>Blau</Button>
-                    <Button type="button" variant={teamColor === "bg-white text-blue-700" ? "default" : "outline"} className="rounded-xl flex-1 border-blue-200" onClick={() => setTeamColor("bg-white text-blue-700")}>Weiß</Button>
-                  </div>
-                  <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={addCustomPlayer}><Plus className="w-4 h-4 mr-2" /> Spielerin hinzufügen</Button>
-                </div>
               </div>
 
               <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
@@ -654,39 +716,15 @@ export default function FussballTaktikboardApp() {
                 </div>
                 {selectedId && selectedId !== "ball" ? (
                   <>
-                    <Input value={playerNames[selectedId] || ""} onChange={(e) => renamePlayerFullName(e.target.value)} placeholder="Name der Spielerin" />
+                    <Input value={selectedRosterPlayer?.name || ""} onChange={(e) => updateSelectedName(e.target.value)} placeholder="Name der Spielerin" />
                     <Input value={selected?.number || ""} onChange={(e) => updateSelectedNumber(e.target.value)} placeholder="Nummer" />
                     <Input value={selected?.role || ""} onChange={(e) => updateSelectedRole(e.target.value)} placeholder="Position, z. B. IV" />
                     <Button variant="outline" className="w-full rounded-xl border-blue-200" onClick={toggleSelectedLock}><Lock className="w-4 h-4 mr-2" /> {selected?.locked ? "Position freigeben" : "Position fixieren"}</Button>
-                    <Button variant="destructive" className="w-full rounded-xl" onClick={removeSelected}><Trash2 className="w-4 h-4 mr-2" /> Auswahl entfernen</Button>
+                    <Button variant="destructive" className="w-full rounded-xl" onClick={removeSelected}><Trash2 className="w-4 h-4 mr-2" /> Aus Aufstellung entfernen</Button>
                   </>
                 ) : selectedId === "ball" ? (
                   <Button variant="destructive" className="w-full rounded-xl" onClick={removeSelected}><CircleDot className="w-4 h-4 mr-2" /> Ball zurücksetzen</Button>
                 ) : <p className="text-sm text-slate-500">Klicke auf eine Spielerin oder den Ball.</p>}
-              </div>
-
-              <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm font-medium text-blue-800">Notizen</div>
-                  <ClipboardList className="w-4 h-4 text-blue-700" />
-                </div>
-                <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} className="min-h-[120px] bg-white" />
-              </div>
-
-              <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm font-medium text-blue-800">Gespeicherte Aufstellungen</div>
-                  <FolderOpen className="w-4 h-4 text-blue-700" />
-                </div>
-                {savedSetups.length === 0 ? <p className="text-sm text-slate-500">Noch keine Aufstellung gespeichert.</p> : (
-                  <div className="space-y-2 max-h-56 overflow-auto pr-1">
-                    {savedSetups.map((setup) => (
-                      <Button key={setup.id} variant="outline" className="w-full justify-start rounded-xl border-blue-200" onClick={() => loadSetup(setup.id)}>{setup.name} · {setup.formation}</Button>
-                    ))}
-                  </div>
-                )}
-                {selectedArrowId && <Button variant="destructive" className="w-full rounded-xl" onClick={deleteSelectedArrow}><X className="w-4 h-4 mr-2" /> Markierten Pfeil löschen</Button>}
-                {arrows.length > 0 && <Button variant="outline" className="w-full rounded-xl border-blue-200" onClick={clearArrows}>Pfeile löschen</Button>}
               </div>
             </CardContent>
           </Card>
@@ -745,29 +783,19 @@ export default function FussballTaktikboardApp() {
                 <div className="absolute left-1/2 -translate-x-1/2 top-2 text-white/90 text-xs font-semibold tracking-widest">GEGNER</div>
                 <div className="absolute left-1/2 -translate-x-1/2 bottom-2 text-white/90 text-xs font-semibold tracking-widest">DEIN TEAM</div>
 
-                {players.map((player) => (
-                  <div key={player.id}>
-                    <PlayerChip item={player} selected={selectedId === player.id} locked={!!player.locked} onPointerDown={startDrag("player", player.id)} onClick={() => setSelectedId(player.id)} />
-                    <div className="absolute -translate-x-1/2 text-[10px] font-medium text-white bg-slate-900/45 px-2 py-0.5 rounded-full" style={{ left: `${player.x}%`, top: `calc(${player.y}% + 30px)` }}>
-                      {playerNames[player.id] || player.id} · {player.role || ""}{player.locked ? " · FIX" : ""}
+                {players.map((player) => {
+                  const rosterPlayer = roster.find((r) => r.id === player.rosterId);
+                  return (
+                    <div key={player.id}>
+                      <PlayerChip item={player} selected={selectedId === player.id} locked={!!player.locked} onPointerDown={startDrag("player", player.id)} onClick={() => setSelectedId(player.id)} />
+                      <div className="absolute -translate-x-1/2 text-[10px] font-medium text-white bg-slate-900/45 px-2 py-0.5 rounded-full" style={{ left: `${player.x}%`, top: `calc(${player.y}% + 30px)` }}>
+                        {rosterPlayer?.name || player.id} · {player.role || ""}{player.locked ? " · FIX" : ""}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
 
                 <button onPointerDown={startDrag("ball", "ball")} onClick={() => setSelectedId("ball")} className={`absolute -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white border-2 ${selectedId === "ball" ? "border-yellow-300 scale-110" : "border-slate-900/20"} shadow-lg`} style={{ left: `${ball.x}%`, top: `${ball.y}%` }} title="Ball" />
-              </div>
-
-              <div className="grid lg:grid-cols-[1fr_300px] gap-4 mt-4">
-                <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600 print:hidden">
-                  <Badge className="rounded-full bg-blue-700"><Shield className="w-3 h-3 mr-1" /> Heim</Badge>
-                  <Badge className="rounded-full bg-white text-blue-700 border border-blue-200"><Shield className="w-3 h-3 mr-1" /> Alternativ Weiß</Badge>
-                  <Badge variant="outline" className="rounded-full"><Hash className="w-3 h-3 mr-1" /> Nummern sichtbar</Badge>
-                  <Badge variant="outline" className="rounded-full"><Lock className="w-3 h-3 mr-1" /> Positionen fixierbar</Badge>
-                </div>
-                <div className="border border-blue-100 rounded-2xl p-4 bg-blue-50 text-sm text-slate-700">
-                  <div className="font-semibold mb-2">Kurznotizen</div>
-                  <div className="whitespace-pre-wrap text-slate-600">{notes}</div>
-                </div>
               </div>
             </CardContent>
           </Card>
