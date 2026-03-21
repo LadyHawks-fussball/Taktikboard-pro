@@ -197,7 +197,7 @@ export default function FussballTaktikboardApp() {
   const [newTrainingFocus, setNewTrainingFocus] = useState("Coachingpunkt");
   const [boardTitle, setBoardTitle] = useState("Taktikboard Fußball");
   const [matchInfo, setMatchInfo] = useState("Training / Spielbesprechung");
-  const [clubLogo, setClubLogo] = useState("");
+  const [clubLogo, setClubLogo] = useState("/ladyhawks-logo.png");
   const [selectedFormation, setSelectedFormation] = useState("4-3-3");
   const [mode, setMode] = useState("move");
   const [selectedArrowId, setSelectedArrowId] = useState(null);
@@ -578,18 +578,22 @@ export default function FussballTaktikboardApp() {
 
   const openPresetView = (type) => {
     if (type === "training") {
-      setBoardTitle("Trainingseinheit");
+      setBoardTitle("Trainingsplanung Lady Hawks");
       setMatchInfo("Trainingsplanung");
       setCurrentView("training");
       return;
     }
     if (type === "match") {
-      setBoardTitle("Spielanalyse / Gegnerbesprechung");
+      setBoardTitle("Taktikboard Lady Hawks");
       setMatchInfo("Matchbesprechung");
+      setCurrentView("board");
+      return;
     }
     if (type === "board") {
-      setBoardTitle("Taktikboard Fußball");
+      setBoardTitle("Taktikboard Lady Hawks");
       setMatchInfo("Training / Spielbesprechung");
+      setCurrentView("board");
+      return;
     }
     setCurrentView("board");
   };
@@ -608,10 +612,17 @@ export default function FussballTaktikboardApp() {
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="rounded-[32px] bg-white/85 shadow-xl border border-blue-100 p-8 md:p-10 backdrop-blur">
             <div className="flex items-start justify-between gap-6 flex-wrap">
+              <div className="flex items-center gap-5">
+                {clubLogo ? (
+                  <img src={clubLogo} alt="Lady Hawks Logo" className="h-24 w-24 object-contain rounded-2xl border border-blue-100 bg-white p-2 shadow-sm" />
+                ) : null}
+                <div>
               <div>
                 <div className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">Web-App für den PC</div>
-                <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2">Taktikboard Pro Blau/Weiß</h1>
-                <p className="text-slate-600 mt-3 max-w-2xl">Mit Drag & Drop vom Kader aufs Spielfeld, Login-Bereich für Cloud-Speicherung und Trainingsplanung mit Übungen.</p>
+                <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2">Taktikboard Lady Hawks</h1>
+                <p className="text-slate-600 mt-3 max-w-2xl">Mit Drag & Drop vom Kader aufs Spielfeld, Teamlogo auf der Startseite und Trainingsplanung mit Übungen.</p>
+              </div>
+              </div>
               </div>
               <div className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-slate-600 min-w-[280px]">
                 <div className="font-semibold text-slate-900 mb-2">Login & Cloud</div>
@@ -633,7 +644,7 @@ export default function FussballTaktikboardApp() {
             <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5 mt-10">
               <StartCard icon={<Monitor className="w-8 h-8" />} title="Neues Taktikboard" text="Direkt mit Formation, Spielerinnen und Pfeilen starten." onClick={() => openPresetView("board")} />
               <StartCard icon={<Users className="w-8 h-8" />} title="Spielerinnen-Kader" text="Kader verwalten und per Drag & Drop in die Aufstellung ziehen." onClick={() => setCurrentView("roster")} />
-              <StartCard icon={<CalendarDays className="w-8 h-8" />} title="Trainingsplanung" text="Übungen, Minuten und Schwerpunkte für Einheiten planen." onClick={() => setCurrentView("training")} />
+              <StartCard icon={<CalendarDays className="w-8 h-8" />} title="Trainingsplanung" text="Übungen, Minuten und Schwerpunkte für Einheiten planen." onClick={() => openPresetView("training")} />
               <StartCard icon={<FolderOpen className="w-8 h-8" />} title="Gespeicherte Taktiken" text="Lokale und Cloud-Boards öffnen und weiter bearbeiten." onClick={() => setCurrentView("library")} />
             </div>
           </div>
@@ -676,7 +687,7 @@ export default function FussballTaktikboardApp() {
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
-              <div className="text-3xl font-bold text-slate-900">Trainingsplanung</div>
+              <div className="text-3xl font-bold text-slate-900">Trainingsplanung Lady Hawks</div>
               <div className="text-slate-600 mt-1">Einheiten, Dauer und Coachingpunkte verwalten.</div>
             </div>
             <div className="flex gap-2">
@@ -771,7 +782,7 @@ export default function FussballTaktikboardApp() {
             <CardHeader>
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <CardTitle className="text-2xl text-blue-800">Taktikboard Fußball</CardTitle>
+                  <CardTitle className="text-2xl text-blue-800">Taktikboard Lady Hawks</CardTitle>
                   <p className="text-sm text-slate-600">Mit Drag & Drop, Login/Cloud und Trainingsplanung.</p>
                 </div>
                 <div className="flex gap-2">
