@@ -10,6 +10,7 @@ import {
   RotateCcw,
   Download,
   Trash2,
+  Plus,
   Shield,
   CircleDot,
   MoveRight,
