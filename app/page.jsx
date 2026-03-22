@@ -801,8 +801,6 @@ const notNominatedPlayers = useMemo(() => roster
     })}
   </CardContent>
 </Card>
-              )
-            )}
           </div>
         </div>
       ) : currentView === "training" ? (
