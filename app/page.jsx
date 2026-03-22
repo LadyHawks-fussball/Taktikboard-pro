@@ -890,7 +890,6 @@ const notNominatedPlayers = useMemo(() => roster
               </div>
 
               <div
-                <div
   ref={boardRef}
   onClick={handleBoardClick}
   onPointerMove={mode === "move" ? onPointerMove : undefined}
