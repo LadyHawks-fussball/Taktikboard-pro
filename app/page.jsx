@@ -42,21 +42,21 @@ import {
 const initialAway = [];
 
 const initialRoster = [
-  { id: "r1", name: "Spielerin 1", number: "1", role: "TW", color: "bg-blue-700", customRoleLabel: "TW" },
-  { id: "r2", name: "Spielerin 2", number: "2", role: "LV", color: "bg-blue-700", customRoleLabel: "LV" },
-  { id: "r3", name: "Spielerin 3", number: "3", role: "IV", color: "bg-blue-700", customRoleLabel: "IV" },
-  { id: "r4", name: "Spielerin 4", number: "4", role: "IV", color: "bg-blue-700", customRoleLabel: "IV" },
-  { id: "r5", name: "Spielerin 5", number: "5", role: "RV", color: "bg-blue-700", customRoleLabel: "RV" },
-  { id: "r6", name: "Spielerin 6", number: "6", role: "ZM", color: "bg-blue-700", customRoleLabel: "ZM" },
-  { id: "r7", name: "Spielerin 7", number: "7", role: "6", color: "bg-blue-700", customRoleLabel: "6" },
-  { id: "r8", name: "Spielerin 8", number: "8", role: "ZM", color: "bg-blue-700", customRoleLabel: "ZM" },
-  { id: "r9", name: "Spielerin 9", number: "9", role: "LA", color: "bg-blue-700", customRoleLabel: "LA" },
-  { id: "r10", name: "Spielerin 10", number: "10", role: "ST", color: "bg-blue-700", customRoleLabel: "ST" },
-  { id: "r11", name: "Spielerin 11", number: "11", role: "RA", color: "bg-blue-700", customRoleLabel: "RA" },
-  { id: "r12", name: "Spielerin 12", number: "12", role: "BANK", color: "bg-blue-700", customRoleLabel: "BANK" },
-  { id: "r13", name: "Spielerin 13", number: "13", role: "BANK", color: "bg-white text-blue-700", customRoleLabel: "BANK" },
-  { id: "r14", name: "Spielerin 14", number: "14", role: "BANK", color: "bg-blue-700", customRoleLabel: "BANK" },
-  { id: "r15", name: "Spielerin 15", number: "15", role: "BANK", color: "bg-white text-blue-700", customRoleLabel: "BANK" },
+  { id: "r1", name: "Spielerin 1", number: "1", role: "TW", color: "bg-blue-700", customRoleLabel: "TW", photo: "" },
+  { id: "r2", name: "Spielerin 2", number: "2", role: "LV", color: "bg-blue-700", customRoleLabel: "LV", photo: "" },
+  { id: "r3", name: "Spielerin 3", number: "3", role: "IV", color: "bg-blue-700", customRoleLabel: "IV", photo: "" },
+  { id: "r4", name: "Spielerin 4", number: "4", role: "IV", color: "bg-blue-700", customRoleLabel: "IV", photo: "" },
+  { id: "r5", name: "Spielerin 5", number: "5", role: "RV", color: "bg-blue-700", customRoleLabel: "RV", photo: "" },
+  { id: "r6", name: "Spielerin 6", number: "6", role: "ZM", color: "bg-blue-700", customRoleLabel: "ZM", photo: "" },
+  { id: "r7", name: "Spielerin 7", number: "7", role: "6", color: "bg-blue-700", customRoleLabel: "6", photo: "" },
+  { id: "r8", name: "Spielerin 8", number: "8", role: "ZM", color: "bg-blue-700", customRoleLabel: "ZM", photo: "" },
+  { id: "r9", name: "Spielerin 9", number: "9", role: "LA", color: "bg-blue-700", customRoleLabel: "LA", photo: "" },
+  { id: "r10", name: "Spielerin 10", number: "10", role: "ST", color: "bg-blue-700", customRoleLabel: "ST", photo: "" },
+  { id: "r11", name: "Spielerin 11", number: "11", role: "RA", color: "bg-blue-700", customRoleLabel: "RA", photo: "" },
+  { id: "r12", name: "Spielerin 12", number: "12", role: "BANK", color: "bg-blue-700", customRoleLabel: "BANK", photo: "" },
+  { id: "r13", name: "Spielerin 13", number: "13", role: "BANK", color: "bg-white text-blue-700", customRoleLabel: "BANK", photo: "" },
+  { id: "r14", name: "Spielerin 14", number: "14", role: "BANK", color: "bg-blue-700", customRoleLabel: "BANK", photo: "" },
+  { id: "r15", name: "Spielerin 15", number: "15", role: "BANK", color: "bg-white text-blue-700", customRoleLabel: "BANK", photo: "" },
 ];
 
 const initialTrainingBlocks = [
@@ -342,6 +342,7 @@ const notNominatedPlayers = useMemo(() => roster
         role: "BANK",
         color: "bg-blue-700",
         customRoleLabel: "BANK",
+        photo: "",
       },
     ]);
     setNewPlayerName("Neue Spielerin");
@@ -622,6 +623,19 @@ const notNominatedPlayers = useMemo(() => roster
     e.target.value = "";
   };
 
+  const handlePlayerPhotoUpload = (playerId) => (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        setRoster((prev) => prev.map((r) => (r.id === playerId ? { ...r, photo: reader.result } : r)));
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  };
+
   const openPresetView = (type) => {
     if (type === "training") {
       setBoardTitle("Trainingsplanung Lady Hawks");
@@ -784,206 +798,26 @@ const notNominatedPlayers = useMemo(() => roster
               </div>
               <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {roster.map((player) => (
-                  <Card key={player.id} className="rounded-2xl border-blue-100 shadow-sm">
-                    <CardContent className="p-4 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div className={`w-10 h-10 rounded-full ${player.color} border-2 border-white shadow flex items-center justify-center text-sm font-bold`}>
-                          {player.number}
-                        </div>
-                        <Badge variant={players.some((p) => p.rosterId === player.id) ? "secondary" : "outline"}>{players.some((p) => p.rosterId === player.id) ? "Im Board" : "Kader"}</Badge>
-                      </div>
-                      <Input value={player.name} onChange={(e) => setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, name: e.target.value } : r)))} placeholder="Name" />
-                      <Input value={player.number} onChange={(e) => {
-                        const cleaned = e.target.value.replace(/[^0-9]/g, "").slice(0, 2);
-                        setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, number: cleaned } : r)));
-                        setPlayers((prev) => prev.map((p) => (p.rosterId === player.id ? { ...p, number: cleaned, label: cleaned } : p)));
-                      }} placeholder="Nummer" />
-                      <Input value={player.customRoleLabel || player.role} onChange={(e) => setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, customRoleLabel: e.target.value } : r)))} placeholder="Positionsname" />
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      ) : (
-        <div className="max-w-[1600px] mx-auto grid xl:grid-cols-[320px_minmax(0,1fr)_300px] gap-6">
-          <Card className="rounded-2xl shadow-xl border border-blue-100 bg-white/90 print:hidden">
-            <CardHeader>
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <CardTitle className="text-2xl text-blue-800">Taktikboard Lady Hawks</CardTitle>
-                  <p className="text-sm text-slate-600">Ohne Gegnerteam, mit rechter Kaderliste und extra Bank.</p>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><Home className="w-4 h-4" /></Button>
-                  <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("roster")}><Users className="w-4 h-4" /></Button>
-                  <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("training")}><CalendarDays className="w-4 h-4" /></Button>
-                  <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("library")}><FolderOpen className="w-4 h-4" /></Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-5">
-              <div>
-                <div className="text-sm font-medium mb-2 text-blue-800">Toolbar</div>
-                <div className="grid grid-cols-2 gap-2">
-                  <Button variant={mode === "move" ? "default" : "outline"} className={`rounded-xl ${mode === "move" ? "bg-blue-700 hover:bg-blue-800" : "border-blue-200"}`} onClick={() => { setMode("move"); setArrowStart(null); }}><MousePointer2 className="w-4 h-4 mr-2" /> Bewegen</Button>
-                  <Button variant={mode === "draw" ? "default" : "outline"} className={`rounded-xl ${mode === "draw" ? "bg-blue-700 hover:bg-blue-800" : "border-blue-200"}`} onClick={() => { setMode("draw"); setArrowStart(null); }}><MoveRight className="w-4 h-4 mr-2" /> Pfeile</Button>
-                  <Button className="rounded-xl bg-blue-700 hover:bg-blue-800" onClick={resetBoard}><RotateCcw className="w-4 h-4 mr-2" /> Reset</Button>
-                  <Button variant="secondary" className="rounded-xl" onClick={exportImage}><Download className="w-4 h-4 mr-2" /> Bild</Button>
-                  <Button variant="outline" className="rounded-xl border-blue-200" onClick={saveSetup}><Save className="w-4 h-4 mr-2" /> Lokal speichern</Button>
-                  <Button variant="outline" className="rounded-xl border-blue-200" onClick={saveCloudBoard} disabled={!isLoggedIn}><LogIn className="w-4 h-4 mr-2" /> Cloud speichern</Button>
-                  <Button variant="outline" className="rounded-xl border-blue-200" onClick={exportBoardFile}><Upload className="w-4 h-4 mr-2 rotate-180" /> Datei</Button>
-                  <Button variant="outline" className="rounded-xl border-blue-200" onClick={printBoard}><Printer className="w-4 h-4 mr-2" /> Drucken</Button>
-                  <Button variant="outline" className="rounded-xl border-blue-200 col-span-2" onClick={exportPDF}><FileText className="w-4 h-4 mr-2" /> PDF</Button>
-                </div>
-              </div>
-
-              <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
-                <div className="text-sm font-medium text-blue-800">Kopfbereich</div>
-                <Input value={boardTitle} onChange={(e) => setBoardTitle(e.target.value)} placeholder="Titel" />
-                <Input value={matchInfo} onChange={(e) => setMatchInfo(e.target.value)} placeholder="z. B. Gegner / Datum / Thema" />
-              </div>
-
-              <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
-                <div className="text-sm font-medium text-blue-800">Formation wählen</div>
-                <div className="grid grid-cols-2 gap-2">
-                  {Object.keys(formations).map((formation) => (
-                    <Button key={formation} type="button" variant={selectedFormation === formation ? "default" : "outline"} className={`rounded-xl ${selectedFormation === formation ? "bg-blue-700 hover:bg-blue-800" : "border-blue-200"}`} onClick={() => applyFormation(formation)}>{formation}</Button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
-                <div className="text-sm font-medium text-blue-800">Auswahl</div>
-                {selectedId && selectedId !== "ball" ? (
-                  <>
-                    <Input value={selectedRosterPlayer?.name || ""} onChange={(e) => updateSelectedName(e.target.value)} placeholder="Name der Spielerin" />
-                    <Input value={selected?.number || ""} onChange={(e) => updateSelectedNumber(e.target.value)} placeholder="Nummer" />
-                    <Input value={selected?.role || ""} onChange={(e) => updateSelectedRole(e.target.value)} placeholder="Positionscode" />
-                    <Input value={selectedRosterPlayer?.customRoleLabel || selected?.role || ""} onChange={(e) => updateSelectedRoleLabel(e.target.value)} placeholder="Manueller Positionsname" />
-                    <Button variant="outline" className="w-full rounded-xl border-blue-200" onClick={toggleSelectedLock}><Lock className="w-4 h-4 mr-2" /> {selected?.locked ? "Position freigeben" : "Position fixieren"}</Button>
-                    <Button variant="destructive" className="w-full rounded-xl" onClick={removeSelected}><Trash2 className="w-4 h-4 mr-2" /> Aus Aufstellung entfernen</Button>
-                  </>
-                ) : selectedId === "ball" ? (
-                  <Button variant="destructive" className="w-full rounded-xl" onClick={removeSelected}><CircleDot className="w-4 h-4 mr-2" /> Ball zurücksetzen</Button>
-                ) : (
-                  <p className="text-sm text-slate-500">Klicke auf eine Spielerin oder den Ball.</p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="rounded-2xl shadow-xl border border-blue-100 overflow-hidden">
-            <CardContent className="p-2 print-area bg-white">
-              <div className="flex items-center justify-between gap-4 mb-4 border border-blue-100 rounded-2xl p-4 bg-[linear-gradient(90deg,#eff6ff_0%,#ffffff_50%,#dbeafe_100%)]">
-                <div>
-                  <div className="text-2xl font-bold text-slate-900">{boardTitle}</div>
-                  <div className="text-sm text-slate-600">{matchInfo}</div>
-                  <div className="text-xs text-slate-500 mt-1">Formation: {selectedFormation}</div>
-                </div>
-                {clubLogo ? (
-                  <img src={clubLogo} alt="Teamlogo" className="h-16 w-16 object-contain rounded-xl border bg-white p-1" />
-                ) : (
-                  <div className="h-16 w-16 rounded-xl border bg-blue-50 flex items-center justify-center text-[10px] text-slate-400 text-center px-2"><ImagePlus className="w-5 h-5" /></div>
-                )}
-              </div>
-
-              <div
-  ref={boardRef}
-  onClick={handleBoardClick}
-  onPointerMove={mode === "move" ? onPointerMove : undefined}
-  onPointerUp={stopDrag}
-  onPointerLeave={stopDrag}
-  onDrop={handleBoardDrop}
-  onDragOver={(e) => e.preventDefault()}
-  style={{
-    pageBreakInside: "avoid",
-    background: "linear-gradient(180deg, #1d4ed8 0%, #2563eb 12%, #1f9d55 12%, #178347 100%)",
-  }}
-  className="relative w-full aspect-[4/5] print:aspect-[4/5] rounded-[28px] overflow-hidden select-none touch-none shadow-inner"
->
-                <div className="absolute right-4 top-4 z-10 rounded-xl bg-white/90 px-3 py-2 text-xs text-slate-600 shadow">Ziehe Spielerinnen von rechts hier hinein</div>
-                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "linear-gradient(45deg, rgba(255,255,255,0.55) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.55) 75%, transparent 75%, transparent)", backgroundSize: "40px 40px" }} />
-                <div className="absolute inset-0 opacity-20">
-                  {Array.from({ length: 12 }).map((_, i) => (
-                    <div key={i} className="absolute inset-y-0 border-l border-white" style={{ left: `${(i + 1) * 8}%` }} />
-                  ))}
-                </div>
-                <div className="absolute inset-4 border-2 border-white/90 rounded-[24px]" />
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 border-2 border-white/90 rounded-full" />
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full" />
-                <div className="absolute left-4 right-4 top-1/2 border-t-2 border-white/90" />
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-4 w-44 h-16 border-2 border-white/90 border-b-0 rounded-t-2xl" />
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-4 w-20 h-7 border-2 border-white/90 border-b-0 rounded-t-xl" />
-
-                <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                  <defs>
-                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
-                      <polygon points="0 0, 10 3.5, 0 7" fill="white" />
-                    </marker>
-                  </defs>
-                  {arrows.map((arrow) => (
-                    <line key={arrow.id} x1={`${arrow.from.x}%`} y1={`${arrow.from.y}%`} x2={`${arrow.to.x}%`} y2={`${arrow.to.y}%`} stroke={selectedArrowId === arrow.id ? "#fde047" : "white"} strokeWidth="3" markerEnd="url(#arrowhead)" strokeLinecap="round" className="cursor-pointer pointer-events-auto" onClick={() => setSelectedArrowId(arrow.id)} />
-                  ))}
-                  {arrowStart && <circle cx={`${arrowStart.x}%`} cy={`${arrowStart.y}%`} r="6" fill="white" />}
-                </svg>
-
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-2 text-white/90 text-xs font-semibold tracking-widest">DEIN TEAM</div>
-
-                {startingPlayers.map((player) => {
-                  const rosterPlayer = roster.find((r) => r.id === player.rosterId);
-                  return (
-                    <div key={player.id}>
-                      <PlayerChip item={player} selected={selectedId === player.id} locked={!!player.locked} onPointerDown={startDrag("player", player.id)} onClick={() => setSelectedId(player.id)} />
-                      <div className="absolute -translate-x-1/2 text-[10px] font-medium text-white bg-slate-900/45 px-2 py-0.5 rounded-full" style={{ left: `${player.x}%`, top: `calc(${player.y}% + 30px)` }}>
-                        {rosterPlayer?.name || player.id} · {rosterPlayer?.customRoleLabel || player.role || ""}{player.locked ? " · FIX" : ""}
-                      </div>
-                    </div>
-                  );
-                })}
-
-                <button onPointerDown={startDrag("ball", "ball")} onClick={() => setSelectedId("ball")} className={`absolute -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white border-2 ${selectedId === "ball" ? "border-yellow-300 scale-110" : "border-slate-900/20"} shadow-lg`} style={{ left: `${ball.x}%`, top: `${ball.y}%` }} title="Ball" />
-              </div>
-
-              <div className="mt-2 space-y-2 text-xs">
-  <div>
-    <strong>Bank (max. 5):</strong>
-    <div className="flex flex-wrap gap-1 mt-1">
-      {benchPlayers.map((player) => (
-        <span key={player.id} className="px-2 py-1 bg-blue-50 border rounded">
-          {player.number} {player.name}
-        </span>
-      ))}
-    </div>
-  </div>
-
-  <div>
-    <strong>Nicht nominiert:</strong>
-    <div className="flex flex-wrap gap-1 mt-1">
-      {notNominatedPlayers.map((player) => (
-        <span key={player.id} className="px-2 py-1 bg-gray-100 border rounded">
-          {player.number} {player.name}
-        </span>
-      ))}
-    </div>
-  </div>
-</div>
-</CardContent>
-          </Card>
-
-          <Card className="rounded-2xl shadow-xl border border-blue-100 bg-white/90 print:hidden">
-            <CardHeader>
-              <CardTitle className="text-xl text-blue-800">Spielerinnen rechts</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 max-h-[85vh] overflow-auto">
-              {roster.map((player) => {
-                const onBoard = players.some((p) => p.rosterId === player.id && p.team === "home");
-                return (
                   <div key={player.id} className="rounded-2xl border border-blue-100 p-3 bg-white shadow-sm space-y-2">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <div className={`w-9 h-9 rounded-full ${player.color} border-2 border-white shadow flex items-center justify-center text-sm font-bold`}>
                         {player.number}
+                      </div>
+                      {player.photo ? (
+                        <img src={player.photo} alt={player.name} className="w-10 h-10 rounded-full object-cover border border-blue-100" />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-slate-100 border border-blue-100 flex items-center justify-center text-[10px] text-slate-500">
+                          Foto
+                        </div>
+                      )}
+                      {players.some((p) => p.rosterId === player.id && p.team === "home") ? <Badge variant="secondary">Im Feld</Badge> : <Badge variant="outline">Bank</Badge>}
+                    </div>
+                    <div className="font-semibold text-slate-900">{player.name}</div>
+                    <div className="text-sm text-slate-500">{player.customRoleLabel || player.role}</div>
+                    <label className="block text-xs text-slate-600">
+                      Spielerfoto
+                      <Input type="file" accept="image/*" onChange={handlePlayerPhotoUpload(player.id)} className="mt-1" />
+                    </label>er.number}
                       </div>
                       {onBoard ? <Badge variant="secondary">Im Feld</Badge> : <Badge variant="outline">Bank</Badge>}
                     </div>
