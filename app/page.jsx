@@ -716,22 +716,91 @@ const notNominatedPlayers = useMemo(() => roster
           </div>
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
             {[...savedSetups, ...cloudBoards].length === 0 ? (
-              <Card className="rounded-3xl shadow-sm border-dashed col-span-full border-blue-200"><CardContent className="p-8 text-center text-slate-500">Noch keine Taktik gespeichert.</CardContent></Card>
+              <Card className="rounded-2xl shadow-xl border border-blue-100 bg-white/90 print:hidden">
+  <CardHeader>
+    <CardTitle className="text-xl text-blue-800">Spielerinnen rechts</CardTitle>
+  </CardHeader>
+
+  <CardContent className="space-y-4 max-h-[85vh] overflow-auto">
+    {roster.map((player) => {
+      const onBoard = players.some(
+        (p) => p.rosterId === player.id && p.team === "home"
+      );
+
+      return (
+        <div
+          key={player.id}
+          className="rounded-2xl border border-blue-100 p-3 bg-white shadow-sm space-y-2"
+        >
+          <div className="flex items-center justify-between gap-2">
+            <div
+              className={`w-9 h-9 rounded-full ${player.color} border-2 border-white shadow flex items-center justify-center text-sm font-bold`}
+            >
+              {player.number}
+            </div>
+
+            {player.photo ? (
+              <img
+                src={player.photo}
+                alt={player.name}
+                className="w-10 h-10 rounded-full object-cover border border-blue-100"
+              />
             ) : (
-              [...savedSetups, ...cloudBoards].map((setup) => (
-                <Card key={setup.id} className="rounded-3xl shadow-sm border-blue-100">
-                  <CardContent className="p-6 space-y-4">
-                    <div>
-                      <div className="text-xl font-bold text-slate-900">{setup.boardTitle || "Taktikboard Lady Hawks"}</div>
-                      <div className="text-sm text-slate-600">{setup.matchInfo || "Besprechung"}</div>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      <Badge variant="secondary">{setup.formation}</Badge>
-                      {setup.owner && <Badge variant="outline">Cloud: {setup.owner}</Badge>}
-                    </div>
-                    <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => loadSetup(setup.id)}>Öffnen</Button>
-                  </CardContent>
-                </Card>
+              <div className="w-10 h-10 rounded-full bg-slate-100 border border-blue-100 flex items-center justify-center text-[10px] text-slate-500">
+                Foto
+              </div>
+            )}
+
+            {onBoard ? (
+              <Badge variant="secondary">Im Feld</Badge>
+            ) : (
+              <Badge variant="outline">Bank</Badge>
+            )}
+          </div>
+
+          <div className="font-semibold text-slate-900">{player.name}</div>
+
+          <div className="text-sm text-slate-500">
+            {player.customRoleLabel || player.role}
+          </div>
+
+          <div className="text-xs text-slate-600">
+            <div>Spielerfoto</div>
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={handlePlayerPhotoUpload(player.id)}
+              className="mt-1"
+            />
+          </div>
+
+          <div className="flex gap-2">
+            <div
+              draggable={!onBoard}
+              onDragStart={handleRosterDragStart(player)}
+              className={`flex-1 rounded-xl border px-3 py-2 text-sm flex items-center justify-center gap-2 ${
+                onBoard
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-grab border-blue-200 bg-blue-50"
+              }`}
+            >
+              <Grip className="w-4 h-4" />
+              Ziehen
+            </div>
+
+            <Button
+              className="flex-1 rounded-xl bg-blue-700 hover:bg-blue-800"
+              onClick={() => addRosterPlayerToBoard(player)}
+              disabled={onBoard}
+            >
+              {onBoard ? "Im Feld" : "Einfügen"}
+            </Button>
+          </div>
+        </div>
+      );
+    })}
+  </CardContent>
+</Card>
               ))
             )}
           </div>
