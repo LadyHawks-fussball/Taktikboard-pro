@@ -10,6 +10,7 @@ import {
   RotateCcw,
   Download,
   Trash2,
+  Grid3X3,
   MoveRight,
   Save,
   FolderOpen,
@@ -25,7 +26,6 @@ import {
   ArrowLeft,
   Check,
   Lock,
-  Hash,
   ImagePlus,
   UserPlus,
   LogIn,
@@ -158,10 +158,19 @@ function PlayerCircle({ player, rosterPlayer, selected, onPointerDown, onClick }
       <button
         onPointerDown={onPointerDown}
         onClick={onClick}
-        className={`absolute -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full ${player.color} border-2 ${selected ? "border-yellow-300" : "border-white"} shadow-lg flex items-center justify-center text-xs font-bold`}
+        className={`absolute -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full border-2 ${selected ? "border-yellow-300" : "border-white"} shadow-lg flex items-center justify-center text-xs font-bold overflow-hidden ${rosterPlayer?.photo ? "bg-slate-200" : player.color}`}
         style={{ left: `${player.x}%`, top: `${player.y}%`, cursor: player.locked ? "not-allowed" : "grab" }}
       >
-        {player.number}
+        {rosterPlayer?.photo ? (
+          <>
+            <img src={rosterPlayer.photo} alt={rosterPlayer.name} className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute bottom-0 right-0 min-w-[18px] h-[18px] px-1 rounded-tl-md bg-blue-700 text-white text-[10px] flex items-center justify-center border-l border-t border-white">
+              {player.number}
+            </div>
+          </>
+        ) : (
+          player.number
+        )}
       </button>
       <div
         className="absolute -translate-x-1/2 text-[11px] font-semibold text-white bg-slate-900/85 px-2.5 py-1 rounded-md shadow whitespace-nowrap"
@@ -191,6 +200,7 @@ export default function FussballTaktikboardApp() {
   const [clubLogo, setClubLogo] = useState("/ladyhawks-logo.png");
   const [selectedFormation, setSelectedFormation] = useState("4-3-3");
   const [mode, setMode] = useState("move");
+  const [showZones, setShowZones] = useState(false);
   const [savedSetups, setSavedSetups] = useState([]);
   const [cloudBoards, setCloudBoards] = useState([]);
   const [arrows, setArrows] = useState([]);
@@ -225,10 +235,12 @@ export default function FussballTaktikboardApp() {
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem("taktikboard_saved_setups_v6");
+      const raw = localStorage.getItem("taktikboard_saved_setups_v7");
       if (raw) setSavedSetups(JSON.parse(raw));
       const cloudRaw = localStorage.getItem("taktikboard_cloud_boards_v1");
       if (cloudRaw) setCloudBoards(JSON.parse(cloudRaw));
+      const rosterRaw = localStorage.getItem("taktikboard_roster_v1");
+      if (rosterRaw) setRoster(JSON.parse(rosterRaw));
       const userRaw = localStorage.getItem("taktikboard_login_v1");
       if (userRaw) {
         const user = JSON.parse(userRaw);
@@ -259,10 +271,11 @@ export default function FussballTaktikboardApp() {
 
   useEffect(() => {
     try {
-      localStorage.setItem("taktikboard_saved_setups_v6", JSON.stringify(savedSetups));
+      localStorage.setItem("taktikboard_saved_setups_v7", JSON.stringify(savedSetups));
       localStorage.setItem("taktikboard_cloud_boards_v1", JSON.stringify(cloudBoards));
+      localStorage.setItem("taktikboard_roster_v1", JSON.stringify(roster));
     } catch {}
-  }, [savedSetups, cloudBoards]);
+  }, [savedSetups, cloudBoards, roster]);
 
   const applyFormation = (formationKey) => {
     const formation = formations[formationKey] || formations["4-3-3"];
@@ -371,12 +384,6 @@ export default function FussballTaktikboardApp() {
     }
     setArrows((prev) => [...prev, { id: `a${Date.now()}`, from: arrowStart, to: { x, y } }]);
     setArrowStart(null);
-  };
-
-  const clearArrows = () => {
-    setArrows([]);
-    setArrowStart(null);
-    setSelectedArrowId(null);
   };
 
   const removeSelected = () => {
@@ -584,7 +591,7 @@ export default function FussballTaktikboardApp() {
                 <div>
                   <div className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-700">Web-App für den PC</div>
                   <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2">Taktikboard Lady Hawks</h1>
-                  <p className="text-slate-600 mt-3 max-w-2xl">Mit rechter Spielerinnen-Liste, extra Bank, nicht nominiert und freiem Positionsnamen.</p>
+                  <p className="text-slate-600 mt-3 max-w-2xl">Mit rechter Spielerinnen-Liste, extra Bank, nicht nominiert, 18 Zonen und Fotos im Spielfeld.</p>
                 </div>
               </div>
               <div className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-slate-600 min-w-[280px]">
@@ -673,7 +680,7 @@ export default function FussballTaktikboardApp() {
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
               <div className="text-3xl font-bold text-slate-900">Spielerinnen-Kader</div>
-              <div className="text-slate-600 mt-1">Spielerinnen bearbeiten und Fotos hochladen.</div>
+              <div className="text-slate-600 mt-1">Spielerinnen bearbeiten und Fotos hochladen. Der Kader wird automatisch lokal gespeichert.</div>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><ArrowLeft className="w-4 h-4 mr-2" /> Menü</Button>
@@ -704,7 +711,11 @@ export default function FussballTaktikboardApp() {
                         )}
                       </div>
                       <Input value={player.name} onChange={(e) => setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, name: e.target.value } : r)))} placeholder="Name" />
-                      <Input value={player.number} onChange={(e) => setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, number: e.target.value.replace(/[^0-9]/g, "").slice(0, 2) } : r)))} placeholder="Nummer" />
+                      <Input value={player.number} onChange={(e) => {
+                        const cleaned = e.target.value.replace(/[^0-9]/g, "").slice(0, 2);
+                        setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, number: cleaned } : r)));
+                        setPlayers((prev) => prev.map((p) => (p.rosterId === player.id ? { ...p, number: cleaned } : p)));
+                      }} placeholder="Nummer" />
                       <Input value={player.customRoleLabel} onChange={(e) => setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, customRoleLabel: e.target.value } : r)))} placeholder="Positionsname" />
                       <div className="text-xs text-slate-600">
                         <div>Spielerfoto</div>
@@ -768,6 +779,7 @@ export default function FussballTaktikboardApp() {
                 <Button variant={mode === "move" ? "default" : "outline"} className={`rounded-xl ${mode === "move" ? "bg-blue-700 hover:bg-blue-800" : "border-blue-200"}`} onClick={() => { setMode("move"); setArrowStart(null); }}><MousePointer2 className="w-4 h-4 mr-2" /> Bewegen</Button>
                 <Button variant={mode === "draw" ? "default" : "outline"} className={`rounded-xl ${mode === "draw" ? "bg-blue-700 hover:bg-blue-800" : "border-blue-200"}`} onClick={() => { setMode("draw"); setArrowStart(null); }}><MoveRight className="w-4 h-4 mr-2" /> Pfeile</Button>
                 <Button className="rounded-xl bg-blue-700 hover:bg-blue-800" onClick={() => { setPlayers([]); setBall(initialBall); setArrows([]); setArrowStart(null); }}> <RotateCcw className="w-4 h-4 mr-2" /> Reset</Button>
+                <Button variant="outline" className="rounded-xl border-blue-200" onClick={() => setShowZones((prev) => !prev)}><Grid3X3 className="w-4 h-4 mr-2" /> {showZones ? "Zonen aus" : "18 Zonen"}</Button>
                 <Button variant="secondary" className="rounded-xl" onClick={exportImage}><Download className="w-4 h-4 mr-2" /> Bild</Button>
                 <Button variant="outline" className="rounded-xl border-blue-200" onClick={saveSetup}><Save className="w-4 h-4 mr-2" /> Lokal speichern</Button>
                 <Button variant="outline" className="rounded-xl border-blue-200" onClick={saveCloudBoard} disabled={!isLoggedIn}><LogIn className="w-4 h-4 mr-2" /> Cloud speichern</Button>
@@ -853,6 +865,28 @@ export default function FussballTaktikboardApp() {
               >
                 <div className="absolute right-4 top-4 z-10 rounded-xl bg-white/90 px-3 py-2 text-xs text-slate-600 shadow">Ziehe Spielerinnen von rechts hier hinein</div>
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "linear-gradient(45deg, rgba(255,255,255,0.55) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.55) 75%, transparent 75%, transparent)", backgroundSize: "40px 40px" }} />
+                {showZones ? (
+                  <div className="absolute inset-0 pointer-events-none">
+                    {Array.from({ length: 18 }).map((_, index) => {
+                      const col = index % 3;
+                      const row = Math.floor(index / 3);
+                      return (
+                        <div
+                          key={index}
+                          className="absolute border border-white/35 flex items-center justify-center text-white/70 text-[10px] font-semibold"
+                          style={{
+                            left: `${col * (100 / 3)}%`,
+                            top: `${row * (100 / 6)}%`,
+                            width: `${100 / 3}%`,
+                            height: `${100 / 6}%`,
+                          }}
+                        >
+                          {index + 1}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : null}
                 <div className="absolute inset-4 border-2 border-white/90 rounded-[24px]" />
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 border-2 border-white/90 rounded-full" />
                 <div className="absolute left-4 right-4 top-1/2 border-t-2 border-white/90" />
