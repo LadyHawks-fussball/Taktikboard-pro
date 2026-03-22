@@ -890,11 +890,20 @@ const notNominatedPlayers = useMemo(() => roster
               </div>
 
               <div
-                ref={boardRef}
-                style={{pageBreakInside:"avoid"}}
-                className="relative w-full aspect-[4/5] print:aspect-[4/5]" rounded-[28px] overflow-hidden select-none touch-none shadow-inner"
-                style={{ background: "linear-gradient(180deg, #1d4ed8 0%, #2563eb 12%, #1f9d55 12%, #178347 100%)" }}
-              >
+                <div
+  ref={boardRef}
+  onClick={handleBoardClick}
+  onPointerMove={mode === "move" ? onPointerMove : undefined}
+  onPointerUp={stopDrag}
+  onPointerLeave={stopDrag}
+  onDrop={handleBoardDrop}
+  onDragOver={(e) => e.preventDefault()}
+  style={{
+    pageBreakInside: "avoid",
+    background: "linear-gradient(180deg, #1d4ed8 0%, #2563eb 12%, #1f9d55 12%, #178347 100%)",
+  }}
+  className="relative w-full aspect-[4/5] print:aspect-[4/5] rounded-[28px] overflow-hidden select-none touch-none shadow-inner"
+>
                 <div className="absolute right-4 top-4 z-10 rounded-xl bg-white/90 px-3 py-2 text-xs text-slate-600 shadow">Ziehe Spielerinnen von rechts hier hinein</div>
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "linear-gradient(45deg, rgba(255,255,255,0.55) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0.55) 75%, transparent 75%, transparent)", backgroundSize: "40px 40px" }} />
                 <div className="absolute inset-0 opacity-20">
