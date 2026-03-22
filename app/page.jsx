@@ -814,11 +814,15 @@ const notNominatedPlayers = useMemo(() => roster
                     </div>
                     <div className="font-semibold text-slate-900">{player.name}</div>
                     <div className="text-sm text-slate-500">{player.customRoleLabel || player.role}</div>
-                    <label className="block text-xs text-slate-600">
-                      Spielerfoto
-                      <Input type="file" accept="image/*" onChange={handlePlayerPhotoUpload(player.id)} className="mt-1" />
-                    </label>er.number}
-                      </div>
+                    <div className="text-xs text-slate-600">
+  <div>Spielerfoto</div>
+  <Input
+    type="file"
+    accept="image/*"
+    onChange={handlePlayerPhotoUpload(player.id)}
+    className="mt-1"
+  />
+</div>
                       {onBoard ? <Badge variant="secondary">Im Feld</Badge> : <Badge variant="outline">Bank</Badge>}
                     </div>
                     <div className="font-semibold text-slate-900">{player.name}</div>
