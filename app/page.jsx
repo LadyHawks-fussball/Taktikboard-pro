@@ -213,7 +213,13 @@ export default function FussballTaktikboardApp() {
   }, [selected, roster]);
 
   const startingPlayers = useMemo(() => players.filter((p) => p.team === "home"), [players]);
-  const benchPlayers = useMemo(() => roster.filter((r) => !players.some((p) => p.rosterId === r.id && p.team === "home")), [roster, players]);
+  const benchPlayers = useMemo(() => roster
+  .filter((r) => !players.some((p) => p.rosterId === r.id && p.team === "home"))
+  .slice(0,5), [roster, players]);
+
+const notNominatedPlayers = useMemo(() => roster
+  .filter((r) => !players.some((p) => p.rosterId === r.id && p.team === "home"))
+  .slice(5), [roster, players]);
 
   useEffect(() => {
     try {
@@ -869,7 +875,7 @@ export default function FussballTaktikboardApp() {
           </Card>
 
           <Card className="rounded-2xl shadow-xl border border-blue-100 overflow-hidden">
-            <CardContent className="p-3 md:p-5 print-area bg-white">
+            <CardContent className="p-2 print-area bg-white">
               <div className="flex items-center justify-between gap-4 mb-4 border border-blue-100 rounded-2xl p-4 bg-[linear-gradient(90deg,#eff6ff_0%,#ffffff_50%,#dbeafe_100%)]">
                 <div>
                   <div className="text-2xl font-bold text-slate-900">{boardTitle}</div>
@@ -885,13 +891,8 @@ export default function FussballTaktikboardApp() {
 
               <div
                 ref={boardRef}
-                onClick={handleBoardClick}
-                onPointerMove={mode === "move" ? onPointerMove : undefined}
-                onPointerUp={stopDrag}
-                onPointerLeave={stopDrag}
-                onDrop={handleBoardDrop}
-                onDragOver={(e) => e.preventDefault()}
-                className="relative w-full aspect-[7/10] rounded-[28px] overflow-hidden select-none touch-none shadow-inner"
+                style={{pageBreakInside:"avoid"}}
+                className="relative w-full aspect-[4/5] print:aspect-[4/5]" rounded-[28px] overflow-hidden select-none touch-none shadow-inner"
                 style={{ background: "linear-gradient(180deg, #1d4ed8 0%, #2563eb 12%, #1f9d55 12%, #178347 100%)" }}
               >
                 <div className="absolute right-4 top-4 z-10 rounded-xl bg-white/90 px-3 py-2 text-xs text-slate-600 shadow">Ziehe Spielerinnen von rechts hier hinein</div>
@@ -937,25 +938,30 @@ export default function FussballTaktikboardApp() {
                 <button onPointerDown={startDrag("ball", "ball")} onClick={() => setSelectedId("ball")} className={`absolute -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white border-2 ${selectedId === "ball" ? "border-yellow-300 scale-110" : "border-slate-900/20"} shadow-lg`} style={{ left: `${ball.x}%`, top: `${ball.y}%` }} title="Ball" />
               </div>
 
-              <div className="grid lg:grid-cols-[1fr_320px] gap-4 mt-4">
-                <div>
-                  <div className="font-semibold text-slate-900 mb-2">Bank</div>
-                  <div className="flex flex-wrap gap-2">
-                    {benchPlayers.map((player) => (
-                      <div key={player.id} className="rounded-xl border border-blue-100 bg-blue-50 px-3 py-2 text-sm text-slate-700 flex items-center gap-2">
-                        <span className={`w-7 h-7 rounded-full ${player.color} flex items-center justify-center text-xs font-bold border border-white`}>{player.number}</span>
-                        <span>{player.name}</span>
-                        <span className="text-slate-500">· {player.customRoleLabel || player.role}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="border border-blue-100 rounded-2xl p-4 bg-blue-50 text-sm text-slate-700">
-                  <div className="font-semibold mb-2">Kurznotizen</div>
-                  <div className="whitespace-pre-wrap text-slate-600">{notes}</div>
-                </div>
-              </div>
-            </CardContent>
+              <div className="mt-2 space-y-2 text-xs">
+  <div>
+    <strong>Bank (max. 5):</strong>
+    <div className="flex flex-wrap gap-1 mt-1">
+      {benchPlayers.map((player) => (
+        <span key={player.id} className="px-2 py-1 bg-blue-50 border rounded">
+          {player.number} {player.name}
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <div>
+    <strong>Nicht nominiert:</strong>
+    <div className="flex flex-wrap gap-1 mt-1">
+      {notNominatedPlayers.map((player) => (
+        <span key={player.id} className="px-2 py-1 bg-gray-100 border rounded">
+          {player.number} {player.name}
+        </span>
+      ))}
+    </div>
+  </div>
+</div>
+</CardContent>
           </Card>
 
           <Card className="rounded-2xl shadow-xl border border-blue-100 bg-white/90 print:hidden">
