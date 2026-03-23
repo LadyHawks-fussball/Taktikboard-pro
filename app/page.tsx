@@ -1045,31 +1045,31 @@ export default function FussballTaktikboardApp() {
 
                       <Input
                         value={player.name}
-                        onChange={(e) =>
-                          setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, name: e.target.value } : r)))
-                        }
+                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+  setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, name: e.target.value } : r)))
+}
                         placeholder="Name"
                       />
 
                       <Input
-                        value={player.number}
-                        onChange={(e) => {
-                          const cleaned = e.target.value.replace(/[^0-9]/g, "").slice(0, 2);
-                          setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, number: cleaned } : r)));
-                          setPlayers((prev) => prev.map((p) => (p.rosterId === player.id ? { ...p, number: cleaned } : p)));
-                        }}
-                        placeholder="Nummer"
-                      />
+  value={player.number}
+  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+    const cleaned = e.target.value.replace(/[^0-9]/g, "").slice(0, 2);
+    setRoster((prev) => prev.map((r) => (r.id === player.id ? { ...r, number: cleaned } : r)));
+    setPlayers((prev) => prev.map((p) => (p.rosterId === player.id ? { ...p, number: cleaned } : p)));
+  }}
+  placeholder="Nummer"
+/>
 
                       <Input
-                        value={player.customRoleLabel}
-                        onChange={(e) =>
-                          setRoster((prev) =>
-                            prev.map((r) => (r.id === player.id ? { ...r, customRoleLabel: e.target.value } : r))
-                          )
-                        }
-                        placeholder="Positionsname"
-                      />
+  value={player.customRoleLabel}
+  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+    setRoster((prev) =>
+      prev.map((r) => (r.id === player.id ? { ...r, customRoleLabel: e.target.value } : r))
+    )
+  }
+  placeholder="Positionsname"
+/>
 
                       <div className="text-xs text-slate-600">
                         <div>Spielerfoto</div>
