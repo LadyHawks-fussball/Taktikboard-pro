@@ -53,6 +53,8 @@ const initialRoster = [
   { id: "r15", name: "Spielerin 15", number: "15", role: "BANK", customRoleLabel: "BANK", color: "bg-white text-blue-700", photo: "" },
 ];
 
+const initialPlayerNotes = {};
+
 const initialTrainingBlocks = [
   { id: "t1", title: "Aufwärmen", minutes: "15", focus: "Mobilisation + Passformen" },
   { id: "t2", title: "Spielform", minutes: "20", focus: "Pressing auslösen" },
@@ -188,6 +190,7 @@ export default function FussballTaktikboardApp() {
   const [players, setPlayers] = useState([]);
   const [roster, setRoster] = useState(initialRoster);
   const [trainingBlocks, setTrainingBlocks] = useState(initialTrainingBlocks);
+  const [playerNotes, setPlayerNotes] = useState(initialPlayerNotes);
   const [ball, setBall] = useState(initialBall);
   const [selectedId, setSelectedId] = useState(null);
   const [newPlayerName, setNewPlayerName] = useState("Neue Spielerin");
@@ -210,6 +213,7 @@ export default function FussballTaktikboardApp() {
   const [copied, setCopied] = useState(false);
   const [notes, setNotes] = useState("Schwerpunkte, Abläufe oder Coachingpunkte hier notieren...");
   const [loginName, setLoginName] = useState("");
+  const [cloudMode, setCloudMode] = useState("local");
   const [cloudEmail, setCloudEmail] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const boardRef = useRef(null);
@@ -241,6 +245,8 @@ export default function FussballTaktikboardApp() {
       if (cloudRaw) setCloudBoards(JSON.parse(cloudRaw));
       const rosterRaw = localStorage.getItem("taktikboard_roster_v1");
       if (rosterRaw) setRoster(JSON.parse(rosterRaw));
+      const notesRaw = localStorage.getItem("taktikboard_player_notes_v1");
+      if (notesRaw) setPlayerNotes(JSON.parse(notesRaw));
       const userRaw = localStorage.getItem("taktikboard_login_v1");
       if (userRaw) {
         const user = JSON.parse(userRaw);
@@ -274,8 +280,9 @@ export default function FussballTaktikboardApp() {
       localStorage.setItem("taktikboard_saved_setups_v7", JSON.stringify(savedSetups));
       localStorage.setItem("taktikboard_cloud_boards_v1", JSON.stringify(cloudBoards));
       localStorage.setItem("taktikboard_roster_v1", JSON.stringify(roster));
+      localStorage.setItem("taktikboard_player_notes_v1", JSON.stringify(playerNotes));
     } catch {}
-  }, [savedSetups, cloudBoards, roster]);
+  }, [savedSetups, cloudBoards, roster, playerNotes]);
 
   const applyFormation = (formationKey) => {
     const formation = formations[formationKey] || formations["4-3-3"];
@@ -574,6 +581,20 @@ export default function FussballTaktikboardApp() {
     localStorage.removeItem("taktikboard_login_v1");
   };
 
+  const updatePlayerNote = (playerId, field, value) => {
+    setPlayerNotes((prev) => ({
+      ...prev,
+      [playerId]: {
+        improvement: "",
+        strengths: "",
+        coachNote: "",
+        coCoachNote: "",
+        ...(prev[playerId] || {}),
+        [field]: value,
+      },
+    }));
+  };
+
   const openBoard = () => {
     setBoardTitle("Taktikboard Lady Hawks");
     setMatchInfo("Training / Spielbesprechung");
@@ -612,7 +633,7 @@ export default function FussballTaktikboardApp() {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5 mt-10">
+            <div className="grid md:grid-cols-2 xl:grid-cols-5 gap-5 mt-10">
               <button onClick={openBoard} className="text-left rounded-3xl border border-blue-100 bg-white/80 hover:bg-white transition p-6 shadow-sm">
                 <Monitor className="w-8 h-8 text-blue-700 mb-4" />
                 <div className="text-2xl font-bold text-slate-900">Neues Taktikboard</div>
@@ -627,6 +648,11 @@ export default function FussballTaktikboardApp() {
                 <CalendarDays className="w-8 h-8 text-blue-700 mb-4" />
                 <div className="text-2xl font-bold text-slate-900">Trainingsplanung</div>
                 <div className="text-sm text-slate-600 mt-2">Übungen, Minuten und Schwerpunkte planen.</div>
+              </button>
+              <button onClick={() => setCurrentView("notes")} className="text-left rounded-3xl border border-blue-100 bg-white/80 hover:bg-white transition p-6 shadow-sm">
+                <FileText className="w-8 h-8 text-blue-700 mb-4" />
+                <div className="text-2xl font-bold text-slate-900">Trainer-Notizen</div>
+                <div className="text-sm text-slate-600 mt-2">Gedankenaustausch zu jeder Spielerin.</div>
               </button>
               <button onClick={() => setCurrentView("library")} className="text-left rounded-3xl border border-blue-100 bg-white/80 hover:bg-white transition p-6 shadow-sm">
                 <FolderOpen className="w-8 h-8 text-blue-700 mb-4" />
@@ -728,6 +754,59 @@ export default function FussballTaktikboardApp() {
             </CardContent>
           </Card>
         </div>
+      ) : currentView === "notes" ? (
+        <div className="max-w-7xl mx-auto space-y-6">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <div className="text-3xl font-bold text-slate-900">Trainer- und Co-Trainer-Notizen</div>
+              <div className="text-slate-600 mt-1">Zu jeder Spielerin Stärken, Verbesserungen und Beobachtungen festhalten.</div>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><ArrowLeft className="w-4 h-4 mr-2" /> Menü</Button>
+              <Button className="rounded-xl bg-blue-700 hover:bg-blue-800" onClick={openBoard}>Zum Board</Button>
+            </div>
+          </div>
+
+          <Card className="rounded-3xl border-blue-100">
+            <CardContent className="p-6 space-y-6">
+              <div className="rounded-2xl border border-blue-100 bg-blue-50 p-4">
+                <div className="font-semibold text-slate-900 mb-2">Cloud-Speicher</div>
+                <div className="text-sm text-slate-600 mb-3">
+                  Aktuell ist automatisches Speichern lokal im Browser aktiv. Für echtes gemeinsames Cloud-Speichern mit deinem Co-Trainer brauchst du als Nächstes Supabase oder Firebase mit Zugangsdaten.
+                </div>
+                <div className="flex gap-2 flex-wrap">
+                  <Badge variant="secondary">Aktiv: {cloudMode === "local" ? "Lokal" : "Cloud vorbereitet"}</Badge>
+                  <Button variant="outline" className="rounded-xl border-blue-200" onClick={() => setCloudMode("cloud")}>Cloud vorbereiten</Button>
+                </div>
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-4">
+                {roster.map((player) => {
+                  const note = playerNotes[player.id] || { improvement: "", strengths: "", coachNote: "", coCoachNote: "" };
+                  return (
+                    <Card key={player.id} className="rounded-2xl border-blue-100 shadow-sm">
+                      <CardContent className="p-4 space-y-3">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-10 h-10 rounded-full ${player.color} border-2 border-white shadow flex items-center justify-center text-sm font-bold`}>
+                            {player.number}
+                          </div>
+                          <div>
+                            <div className="font-bold text-slate-900">{player.name}</div>
+                            <div className="text-sm text-slate-500">{player.customRoleLabel || player.role}</div>
+                          </div>
+                        </div>
+                        <Textarea value={note.strengths} onChange={(e) => updatePlayerNote(player.id, "strengths", e.target.value)} placeholder="Stärken / was gut klappt" className="min-h-[90px]" />
+                        <Textarea value={note.improvement} onChange={(e) => updatePlayerNote(player.id, "improvement", e.target.value)} placeholder="Was verbessert werden soll" className="min-h-[90px]" />
+                        <Textarea value={note.coachNote} onChange={(e) => updatePlayerNote(player.id, "coachNote", e.target.value)} placeholder="Deine Trainer-Notiz" className="min-h-[90px]" />
+                        <Textarea value={note.coCoachNote} onChange={(e) => updatePlayerNote(player.id, "coCoachNote", e.target.value)} placeholder="Co-Trainer-Notiz" className="min-h-[90px]" />
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       ) : currentView === "library" ? (
         <div className="max-w-6xl mx-auto space-y-6">
           <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -770,6 +849,7 @@ export default function FussballTaktikboardApp() {
                   <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("start")}><Home className="w-4 h-4" /></Button>
                   <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("roster")}><Users className="w-4 h-4" /></Button>
                   <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("training")}><CalendarDays className="w-4 h-4" /></Button>
+                  <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("notes")}><FileText className="w-4 h-4" /></Button>
                   <Button variant="outline" size="icon" className="rounded-xl border-blue-200" onClick={() => setCurrentView("library")}><FolderOpen className="w-4 h-4" /></Button>
                 </div>
               </div>
