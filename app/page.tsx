@@ -298,7 +298,7 @@ export default function FussballTaktikboardApp() {
   const [copied, setCopied] = useState(false);
   const [notes, setNotes] = useState("Schwerpunkte, Abläufe oder Coachingpunkte hier notieren...");
 
-  const [user, setUser] = useState<user | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
