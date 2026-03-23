@@ -847,13 +847,13 @@ export default function FussballTaktikboardApp() {
                       <Input
                         placeholder="E-Mail"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                       />
                       <Input
                         placeholder="Passwort"
                         type="password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                       />
                       <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={login}>
                         Login
