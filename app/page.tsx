@@ -1128,29 +1128,37 @@ export default function FussballTaktikboardApp() {
                         </div>
 
                         <Textarea
-                          value={note.strengths}
-                          onChange={(e) => updatePlayerNote(player.id, "strengths", e.target.value)}
-                          placeholder="Stärken / was gut klappt"
-                          className="min-h-[90px]"
-                        />
+  value={note.strengths}
+  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    updatePlayerNote(player.id, "strengths", e.target.value)
+  }
+  placeholder="Stärken / was gut klappt"
+  className="min-h-[90px]"
+/>
                         <Textarea
-                          value={note.improvement}
-                          onChange={(e) => updatePlayerNote(player.id, "improvement", e.target.value)}
-                          placeholder="Was verbessert werden soll"
-                          className="min-h-[90px]"
-                        />
+  value={note.improvement}
+  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    updatePlayerNote(player.id, "improvement", e.target.value)
+  }
+  placeholder="Was verbessert werden soll"
+  className="min-h-[90px]"
+/>
                         <Textarea
-                          value={note.coachNote}
-                          onChange={(e) => updatePlayerNote(player.id, "coachNote", e.target.value)}
-                          placeholder="Deine Trainer-Notiz"
-                          className="min-h-[90px]"
-                        />
+  value={note.coachNote}
+  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    updatePlayerNote(player.id, "coachNote", e.target.value)
+  }
+  placeholder="Deine Trainer-Notiz"
+  className="min-h-[90px]"
+/>
                         <Textarea
-                          value={note.coCoachNote}
-                          onChange={(e) => updatePlayerNote(player.id, "coCoachNote", e.target.value)}
-                          placeholder="Co-Trainer-Notiz"
-                          className="min-h-[90px]"
-                        />
+  value={note.coCoachNote}
+  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+    updatePlayerNote(player.id, "coCoachNote", e.target.value)
+  }
+  placeholder="Co-Trainer-Notiz"
+  className="min-h-[90px]"
+/>
                       </CardContent>
                     </Card>
                   );
