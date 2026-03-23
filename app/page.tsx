@@ -1209,7 +1209,7 @@ export default function FussballTaktikboardApp() {
             <CardHeader>
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <CardTitle className="text-2xl text-blue-800">Taktikboard Lady Hawks</CardTitle>
+                 <CardTitle>Taktikboard Lady Hawks</CardTitle>
                   <p className="text-sm text-slate-600">Ohne Gegnerteam, mit rechter Liste und extra Bank.</p>
                 </div>
                 <div className="flex gap-2">
@@ -1530,7 +1530,7 @@ export default function FussballTaktikboardApp() {
 
           <Card className="rounded-2xl shadow-xl border border-blue-100 bg-white/90 print:hidden">
             <CardHeader>
-              <CardTitle className="text-xl text-blue-800">Spielerinnen rechts</CardTitle>
+              <CardTitle>Spielerinnen rechts</CardTitle>
             </CardHeader>
 
             <CardContent className="space-y-4 max-h-[85vh] overflow-auto">
