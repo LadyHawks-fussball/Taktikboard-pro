@@ -785,19 +785,23 @@ export default function FussballTaktikboardApp() {
       e.target.value = "";
     };
 
-  const updatePlayerNote = (playerId: string, field: keyof PlayerNote, value: string) => {
-    setPlayerNotes((prev) => ({
-      ...prev,
-      [playerId]: {
-        strengths: "",
-        improvement: "",
-        coachNote: "",
-        coCoachNote: "",
-        ...(prev[playerId] || {}),
-        [field]: value,
-      },
-    }));
-  };
+  const updatePlayerNote = (
+  playerId: string,
+  field: keyof PlayerNote,
+  value: string
+) => {
+  setPlayerNotes((prev) => ({
+    ...prev,
+    [playerId]: {
+      strengths: "",
+      improvement: "",
+      coachNote: "",
+      coCoachNote: "",
+      ...(prev[playerId] || {}),
+      [field]: value,
+    },
+  }));
+};
 
   const openBoard = () => {
     setBoardTitle("Taktikboard Lady Hawks");
