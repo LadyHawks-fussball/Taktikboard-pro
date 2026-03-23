@@ -785,7 +785,7 @@ export default function FussballTaktikboardApp() {
       e.target.value = "";
     };
 
-  const updatePlayerNote = (
+ const updatePlayerNote = (
   playerId: string,
   field: keyof PlayerNote,
   value: string
@@ -793,11 +793,12 @@ export default function FussballTaktikboardApp() {
   setPlayerNotes((prev) => ({
     ...prev,
     [playerId]: {
-      strengths: "",
-      improvement: "",
-      coachNote: "",
-      coCoachNote: "",
-      ...(prev[playerId] || {}),
+      ...(prev[playerId] || {
+        strengths: "",
+        improvement: "",
+        coachNote: "",
+        coCoachNote: "",
+      }),
       [field]: value,
     },
   }));
