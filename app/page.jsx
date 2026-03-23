@@ -267,6 +267,7 @@ const [password, setPassword] = useState("");
         setIsLoggedIn(!!user.name);
       }
     } catch {}
+},[]);
 
     const hash = window.location.hash.replace("#shared=", "");
     if (hash) {
