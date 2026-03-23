@@ -1331,8 +1331,8 @@ export default function FussballTaktikboardApp() {
               </div>
 
               <div className="border rounded-2xl p-4 bg-blue-50/70 border-blue-100 space-y-3">
-                <Input value={boardTitle} onChange={(e) => setBoardTitle(e.target.value)} placeholder="Titel" />
-                <Input value={matchInfo} onChange={(e) => setMatchInfo(e.target.value)} placeholder="Info" />
+                <Input value={boardTitle} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setBoardTitle(e.target.value)} placeholder="Titel" />
+                <Input value={matchInfo} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMatchInfo(e.target.value)} placeholder="Info" />
                 <div className="grid grid-cols-2 gap-2">
                   {Object.keys(formations).map((formation) => (
                     <Button
