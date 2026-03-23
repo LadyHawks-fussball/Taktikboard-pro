@@ -1,5 +1,14 @@
 "use client";
 
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
+
+import { auth, db } from "@/lib/firebase";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -213,6 +222,9 @@ export default function FussballTaktikboardApp() {
   const [copied, setCopied] = useState(false);
   const [notes, setNotes] = useState("Schwerpunkte, Abläufe oder Coachingpunkte hier notieren...");
   const [loginName, setLoginName] = useState("");
+const [user, setUser] = useState(null);
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
   const [cloudMode, setCloudMode] = useState("local");
   const [cloudEmail, setCloudEmail] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -276,6 +288,17 @@ export default function FussballTaktikboardApp() {
   }, []);
 
   useEffect(() => {
+  const unsub = onAuthStateChanged(auth, (u) => {
+    if (u) {
+      setUser(u);
+      loadFromCloud();
+    } else {
+      setUser(null);
+    }
+  });
+
+  return () => unsub();
+}, []);
     try {
       localStorage.setItem("taktikboard_saved_setups_v7", JSON.stringify(savedSetups));
       localStorage.setItem("taktikboard_cloud_boards_v1", JSON.stringify(cloudBoards));
@@ -601,6 +624,44 @@ export default function FussballTaktikboardApp() {
     setCurrentView("board");
   };
 
+const login = async () => {
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    alert("Login Fehler");
+  }
+};
+
+const register = async () => {
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    alert("Registrierung Fehler");
+  }
+};
+const saveToCloud = async () => {
+  if (!user) return;
+
+  await setDoc(doc(db, "teams", "ladyhawks"), {
+    roster,
+    notes: playerNotes,
+    updatedAt: new Date(),
+  });
+};
+
+const loadFromCloud = async () => {
+  const snap = await getDoc(doc(db, "teams", "ladyhawks"));
+
+  if (snap.exists()) {
+    const data = snap.data();
+    setRoster(data.roster || []);
+    setPlayerNotes(data.notes || {});
+  }
+};
+
+const logout = async () => {
+  await signOut(auth);
+};
   return (
     <div className="min-h-screen p-6 bg-[linear-gradient(135deg,#dbeafe_0%,#ffffff_45%,#bfdbfe_100%)] print:bg-white print:p-2">
       {currentView === "start" ? (
@@ -617,18 +678,40 @@ export default function FussballTaktikboardApp() {
               </div>
               <div className="rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-slate-600 min-w-[280px]">
                 <div className="font-semibold text-slate-900 mb-2">Login & Cloud</div>
-                {!isLoggedIn ? (
-                  <div className="space-y-2">
-                    <Input value={loginName} onChange={(e) => setLoginName(e.target.value)} placeholder="Trainername" />
-                    <Input value={cloudEmail} onChange={(e) => setCloudEmail(e.target.value)} placeholder="E-Mail" />
-                    <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={handleLogin}><LogIn className="w-4 h-4 mr-2" /> Login aktivieren</Button>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <div>Angemeldet als <strong>{loginName}</strong></div>
-                    <div className="text-xs text-slate-500">{cloudEmail}</div>
-                    <Button variant="outline" className="w-full rounded-xl border-blue-200" onClick={handleLogout}><LogOut className="w-4 h-4 mr-2" /> Abmelden</Button>
-                  </div>
+<div className="space-y-2">
+  {!user ? (
+    <>
+      <Input
+        placeholder="E-Mail"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <Input
+        placeholder="Passwort"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <Button className="w-full" onClick={login}>
+        Login
+      </Button>
+      <Button className="w-full" variant="outline" onClick={register}>
+        Registrieren
+      </Button>
+    </>
+  ) : (
+    <>
+      <div>Angemeldet als <strong>{user.email}</strong></div>
+      <Button className="w-full" onClick={logout}>
+        Logout
+      </Button>
+      <Button className="w-full" onClick={saveToCloud}>
+        Cloud speichern
+      </Button>
+    </>
+  )}
+</div>
+                /div>
                 )}
               </div>
             </div>
