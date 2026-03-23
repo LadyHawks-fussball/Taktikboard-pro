@@ -950,15 +950,17 @@ export default function FussballTaktikboardApp() {
             <CardContent className="p-6 grid lg:grid-cols-[320px_1fr] gap-6">
               <div className="space-y-3">
                 <div className="text-lg font-bold text-slate-900">Neue Einheit / Übung</div>
-                <Input value={newTrainingTitle} onChange={(e) => setNewTrainingTitle(e.target.value)} placeholder="Titel" />
+                <Input value={newTrainingTitle} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewTrainingTitle(e.target.value)} placeholder="Titel" />
                 <Input
                   value={newTrainingMinutes}
-                  onChange={(e) => setNewTrainingMinutes(e.target.value.replace(/[^0-9]/g, "").slice(0, 3))}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+  setNewTrainingMinutes(e.target.value.replace(/[^0-9]/g, "").slice(0, 3))
+}
                   placeholder="Minuten"
                 />
                 <Textarea
                   value={newTrainingFocus}
-                  onChange={(e) => setNewTrainingFocus(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewTrainingFocus(e.target.value)}
                   className="min-h-[100px]"
                   placeholder="Schwerpunkt"
                 />
