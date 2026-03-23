@@ -40,6 +40,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  type User,
 } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
@@ -297,7 +298,7 @@ export default function FussballTaktikboardApp() {
   const [copied, setCopied] = useState(false);
   const [notes, setNotes] = useState("Schwerpunkte, Abläufe oder Coachingpunkte hier notieren...");
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<user | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
