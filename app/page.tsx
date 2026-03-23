@@ -1011,10 +1011,12 @@ export default function FussballTaktikboardApp() {
             <CardContent className="p-6 grid lg:grid-cols-[320px_1fr] gap-6">
               <div className="space-y-3">
                 <div className="text-lg font-bold text-slate-900">Neue Spielerin anlegen</div>
-                <Input value={newPlayerName} onChange={(e) => setNewPlayerName(e.target.value)} placeholder="Name" />
+                <Input value={newPlayerName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewPlayerName(e.target.value)} placeholder="Name" />
                 <Input
                   value={newPlayerNumber}
-                  onChange={(e) => setNewPlayerNumber(e.target.value.replace(/[^0-9]/g, "").slice(0, 2))}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+  setNewPlayerNumber(e.target.value.replace(/[^0-9]/g, "").slice(0, 2))
+}
                   placeholder="Nummer"
                 />
                 <Button className="w-full rounded-xl bg-blue-700 hover:bg-blue-800" onClick={addRosterPlayer}>
